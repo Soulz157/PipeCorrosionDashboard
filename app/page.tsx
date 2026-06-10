@@ -10,6 +10,7 @@ import { LogsView } from "@/components/logs-view"
 import { FactoryFloorView } from "@/components/factory-floor-view"
 import { StreamlitView } from "@/components/streamlit-view"
 import { DashboardV2View } from "@/components/dashboard-v2-view"
+import { GlobalFleetView } from "@/components/global-fleet-view"
 import { LoginScreen } from "@/components/login-screen"
 import { isAuthenticated } from "@/lib/auth-store"
 
@@ -103,6 +104,7 @@ export default function Page() {
                 : "overflow-y-auto p-4 md:p-6",
             )}
           >
+            {view === "fleet" && <GlobalFleetView onChange={setView} />}
             {view === "overview" && <OverviewView />}
             {view === "forecast" && <ForecastView />}
             {view === "logs" && <LogsView />}

@@ -349,3 +349,199 @@ export const fleetSummary = {
   criticalAssets: sensorNodes.filter((n) => n.status === "error").length,
   meanConfidence: 0.96,
 }
+
+// ── Global Fleet View ─────────────────────────────────────────────────────
+
+export type MiniPipeNode = {
+  id: string
+  status: Status
+  x: number
+  y: number
+}
+
+export type MiniPipeConnection = {
+  from: string
+  to: string
+}
+
+export type CompanyFleetEntry = {
+  id: string
+  name: string
+  logoInitials: string
+  overallStatus: Status
+  alertCount: number
+  criticalAssets: number
+  meanConfidence: number
+  nodes: MiniPipeNode[]
+  connections: MiniPipeConnection[]
+}
+
+export const companyFleetData: CompanyFleetEntry[] = [
+  {
+    id: "astra",
+    name: "Astra Chemical",
+    logoInitials: "AC",
+    overallStatus: "error",
+    alertCount: 2,
+    criticalAssets: 2,
+    meanConfidence: 0.87,
+    nodes: [
+      { id: "ac1", status: "normal", x: 20, y: 30 },
+      { id: "ac2", status: "error", x: 60, y: 30 },
+      { id: "ac3", status: "error", x: 100, y: 30 },
+      { id: "ac4", status: "warning", x: 140, y: 30 },
+      { id: "ac5", status: "normal", x: 100, y: 50 },
+    ],
+    connections: [
+      { from: "ac1", to: "ac2" },
+      { from: "ac2", to: "ac3" },
+      { from: "ac3", to: "ac4" },
+      { from: "ac3", to: "ac5" },
+    ],
+  },
+  {
+    id: "borealis",
+    name: "Borealis Steel",
+    logoInitials: "BS",
+    overallStatus: "warning",
+    alertCount: 0,
+    criticalAssets: 0,
+    meanConfidence: 0.91,
+    nodes: [
+      { id: "bs1", status: "normal", x: 20, y: 30 },
+      { id: "bs2", status: "warning", x: 60, y: 30 },
+      { id: "bs3", status: "normal", x: 100, y: 30 },
+      { id: "bs4", status: "warning", x: 140, y: 30 },
+    ],
+    connections: [
+      { from: "bs1", to: "bs2" },
+      { from: "bs2", to: "bs3" },
+      { from: "bs3", to: "bs4" },
+    ],
+  },
+  {
+    id: "novatek",
+    name: "Novatek Refinery",
+    logoInitials: "NR",
+    overallStatus: "normal",
+    alertCount: 0,
+    criticalAssets: 0,
+    meanConfidence: 0.96,
+    nodes: [
+      { id: "nr1", status: "normal", x: 20, y: 30 },
+      { id: "nr2", status: "normal", x: 60, y: 30 },
+      { id: "nr3", status: "normal", x: 100, y: 30 },
+      { id: "nr4", status: "normal", x: 140, y: 30 },
+    ],
+    connections: [
+      { from: "nr1", to: "nr2" },
+      { from: "nr2", to: "nr3" },
+      { from: "nr3", to: "nr4" },
+    ],
+  },
+  {
+    id: "meridian",
+    name: "Meridian Petro",
+    logoInitials: "MP",
+    overallStatus: "error",
+    alertCount: 3,
+    criticalAssets: 3,
+    meanConfidence: 0.79,
+    nodes: [
+      { id: "mp1", status: "error", x: 20, y: 30 },
+      { id: "mp2", status: "error", x: 65, y: 30 },
+      { id: "mp3", status: "warning", x: 65, y: 12 },
+      { id: "mp4", status: "error", x: 110, y: 30 },
+      { id: "mp5", status: "normal", x: 145, y: 30 },
+    ],
+    connections: [
+      { from: "mp1", to: "mp2" },
+      { from: "mp2", to: "mp3" },
+      { from: "mp2", to: "mp4" },
+      { from: "mp4", to: "mp5" },
+    ],
+  },
+  {
+    id: "cascade",
+    name: "Cascade Industrial",
+    logoInitials: "CI",
+    overallStatus: "error",
+    alertCount: 1,
+    criticalAssets: 1,
+    meanConfidence: 0.84,
+    nodes: [
+      { id: "ci1", status: "normal", x: 20, y: 30 },
+      { id: "ci2", status: "error", x: 60, y: 30 },
+      { id: "ci3", status: "warning", x: 100, y: 30 },
+      { id: "ci4", status: "offline", x: 140, y: 30 },
+    ],
+    connections: [
+      { from: "ci1", to: "ci2" },
+      { from: "ci2", to: "ci3" },
+      { from: "ci3", to: "ci4" },
+    ],
+  },
+  {
+    id: "zenith",
+    name: "Zenith Plastics",
+    logoInitials: "ZP",
+    overallStatus: "warning",
+    alertCount: 0,
+    criticalAssets: 0,
+    meanConfidence: 0.94,
+    nodes: [
+      { id: "zp1", status: "normal", x: 30, y: 30 },
+      { id: "zp2", status: "warning", x: 80, y: 30 },
+      { id: "zp3", status: "normal", x: 130, y: 30 },
+    ],
+    connections: [
+      { from: "zp1", to: "zp2" },
+      { from: "zp2", to: "zp3" },
+    ],
+  },
+  {
+    id: "rhein",
+    name: "Rhein Process",
+    logoInitials: "RP",
+    overallStatus: "error",
+    alertCount: 1,
+    criticalAssets: 1,
+    meanConfidence: 0.88,
+    nodes: [
+      { id: "rp1", status: "normal", x: 20, y: 30 },
+      { id: "rp2", status: "normal", x: 60, y: 30 },
+      { id: "rp3", status: "error", x: 100, y: 30 },
+      { id: "rp4", status: "warning", x: 140, y: 30 },
+      { id: "rp5", status: "normal", x: 120, y: 12 },
+    ],
+    connections: [
+      { from: "rp1", to: "rp2" },
+      { from: "rp2", to: "rp3" },
+      { from: "rp3", to: "rp4" },
+      { from: "rp3", to: "rp5" },
+    ],
+  },
+  {
+    id: "pacific",
+    name: "Pacific Midstream",
+    logoInitials: "PM",
+    overallStatus: "normal",
+    alertCount: 0,
+    criticalAssets: 0,
+    meanConfidence: 0.97,
+    nodes: [
+      { id: "pm1", status: "normal", x: 30, y: 30 },
+      { id: "pm2", status: "normal", x: 80, y: 30 },
+      { id: "pm3", status: "normal", x: 130, y: 30 },
+    ],
+    connections: [
+      { from: "pm1", to: "pm2" },
+      { from: "pm2", to: "pm3" },
+    ],
+  },
+]
+
+export const globalAlertCount = companyFleetData.reduce(
+  (sum, c) => sum + c.alertCount,
+  0,
+)

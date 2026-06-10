@@ -1,18 +1,17 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { Card } from "@/components/ui/card"
-import { StatusBadge } from "@/components/status-badge"
-import { AlertBanner } from "@/components/alert-banner"
-import { FactoryCanvas } from "@/components/factory-canvas"
+import { useState } from "react";
+import { Card } from "@/components/ui/card";
+import { StatusBadge } from "@/components/status-badge";
+import { AlertBanner } from "@/components/alert-banner";
+import { FactoryCanvas } from "@/components/factory-canvas";
 import {
   STATUS_META,
   fleetSummary,
   perNodeThicknessTrend,
   sensorNodes,
   statusCounts,
-  type Status,
-} from "@/lib/mock-data"
+} from "@/lib/mock-data";
 import {
   Area,
   AreaChart,
@@ -21,8 +20,8 @@ import {
   Tooltip,
   XAxis,
   YAxis,
-} from "recharts"
-import { Activity, AlertTriangle, Gauge, ShieldCheck } from "lucide-react"
+} from "recharts";
+import { Activity, AlertTriangle, Gauge, ShieldCheck } from "lucide-react";
 
 const NODE_CHART_COLORS: Record<string, string> = {
   "PN-01": "var(--chart-1)",
@@ -30,44 +29,9 @@ const NODE_CHART_COLORS: Record<string, string> = {
   "PN-03": "var(--chart-4)",
   "PN-04": "var(--chart-2)",
   "PN-05": "var(--chart-5)",
-}
+};
 
-const TRACKABLE_NODES = sensorNodes.filter((n) => n.status !== "offline")
-
-function StatusSummaryCard({
-  status,
-  count,
-}: {
-  status: Status
-  count: number
-}) {
-  const meta = STATUS_META[status]
-  return (
-    <Card className="gap-0 p-4">
-      <div className="flex items-center justify-between">
-        <span className="text-sm font-medium text-muted-foreground">
-          {meta.label}
-        </span>
-        <span
-          className="size-2.5 rounded-full"
-          style={{ backgroundColor: meta.token }}
-          aria-hidden="true"
-        />
-      </div>
-      <div className="mt-3 flex items-end gap-2">
-        <span
-          className="text-3xl font-semibold tabular-nums"
-          style={{ color: meta.token }}
-        >
-          {count}
-        </span>
-        <span className="pb-1 text-xs text-muted-foreground">
-          {count === 1 ? "model" : "models"}
-        </span>
-      </div>
-    </Card>
-  )
-}
+const TRACKABLE_NODES = sensorNodes.filter((n) => n.status !== "offline");
 
 function KpiCard({
   label,
@@ -75,10 +39,10 @@ function KpiCard({
   unit,
   icon: Icon,
 }: {
-  label: string
-  value: string
-  unit?: string
-  icon: typeof Activity
+  label: string;
+  value: string;
+  unit?: string;
+  icon: typeof Activity;
 }) {
   return (
     <Card className="flex-row items-center gap-4 p-4">
@@ -97,11 +61,11 @@ function KpiCard({
         </p>
       </div>
     </Card>
-  )
+  );
 }
 
 function ChartTooltip({ active, payload, label }: any) {
-  if (!active || !payload?.length) return null
+  if (!active || !payload?.length) return null;
   return (
     <div className="rounded-md border border-border bg-popover px-3 py-2 text-xs shadow-lg">
       <p className="mb-1 font-medium text-popover-foreground">{label}</p>
@@ -118,40 +82,51 @@ function ChartTooltip({ active, payload, label }: any) {
         </div>
       ))}
     </div>
-  )
+  );
 }
 
 export function OverviewView() {
   const [selectedNodes, setSelectedNodes] = useState<Set<string>>(
     () => new Set(["PN-02", "PN-03", "PN-05"]),
-  )
+  );
 
   function toggleNode(id: string) {
     setSelectedNodes((prev) => {
-      const next = new Set(prev)
-      if (next.has(id)) next.delete(id)
-      else next.add(id)
-      return next
-    })
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
   }
 
-  const activeNodes = TRACKABLE_NODES.filter((n) => selectedNodes.has(n.id))
+  const activeNodes = TRACKABLE_NODES.filter((n) => selectedNodes.has(n.id));
 
   return (
     <div className="flex flex-col gap-6">
       {/* Threshold alerts */}
       <AlertBanner nodes={sensorNodes} />
 
-      {/* Status summary cards */}
-      <section aria-label="Status summary">
-        <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
-          {statusCounts.map((s) => (
-            <StatusSummaryCard
-              key={s.status}
-              status={s.status}
-              count={s.count}
-            />
-          ))}
+      {/* Status summary */}
+      <section aria-label="Status summary" role="status">
+        <div className="flex flex-wrap items-center gap-x-6 gap-y-2 rounded-md border border-border bg-card px-4 py-3">
+          {statusCounts.map((s) => {
+            const meta = STATUS_META[s.status];
+            return (
+              <div key={s.status} className="flex items-center gap-2">
+                <span
+                  className="size-2 shrink-0 rounded-full"
+                  style={{ backgroundColor: meta.token }}
+                  aria-hidden="true"
+                />
+                <span className="text-xs text-muted-foreground">
+                  {meta.label}
+                </span>
+                <span className="text-sm font-semibold tabular-nums text-foreground">
+                  {s.count}
+                </span>
+              </div>
+            );
+          })}
         </div>
       </section>
 
@@ -190,7 +165,8 @@ export function OverviewView() {
               Factory Floor — 2.5D Pipe Network
             </h2>
             <p className="text-xs text-muted-foreground">
-              Live monitoring nodes overlaid on factory layout. Use Build Mode to insert, edit, or remove nodes.
+              Live monitoring nodes overlaid on factory layout. Use Build Mode
+              to insert, edit, or remove nodes.
             </p>
           </div>
         </div>
@@ -234,8 +210,8 @@ export function OverviewView() {
             {/* Node toggle chips */}
             <div className="flex flex-wrap gap-1.5">
               {TRACKABLE_NODES.map((node) => {
-                const active = selectedNodes.has(node.id)
-                const color = NODE_CHART_COLORS[node.id]
+                const active = selectedNodes.has(node.id);
+                const color = NODE_CHART_COLORS[node.id];
                 return (
                   <button
                     key={node.id}
@@ -255,14 +231,17 @@ export function OverviewView() {
                   >
                     <span
                       className="size-1.5 rounded-full"
-                      style={{ backgroundColor: color, opacity: active ? 1 : 0.4 }}
+                      style={{
+                        backgroundColor: color,
+                        opacity: active ? 1 : 0.4,
+                      }}
                     />
                     <span className="font-mono">{node.id}</span>
-                    <span className="hidden truncate max-w-[80px] sm:inline">
+                    <span className="hidden truncate max-w-20 sm:inline">
                       &nbsp;·&nbsp;{node.location.split(" ")[0]}
                     </span>
                   </button>
-                )
+                );
               })}
             </div>
           </div>
@@ -274,7 +253,7 @@ export function OverviewView() {
               >
                 <defs>
                   {TRACKABLE_NODES.map((node) => {
-                    const c = NODE_CHART_COLORS[node.id]
+                    const c = NODE_CHART_COLORS[node.id];
                     return (
                       <linearGradient
                         key={node.id}
@@ -287,7 +266,7 @@ export function OverviewView() {
                         <stop offset="0%" stopColor={c} stopOpacity={0.35} />
                         <stop offset="100%" stopColor={c} stopOpacity={0} />
                       </linearGradient>
-                    )
+                    );
                   })}
                 </defs>
                 <CartesianGrid
@@ -337,11 +316,13 @@ export function OverviewView() {
           <ul className="flex flex-col divide-y divide-border">
             {sensorNodes.map((node) => {
               const alertLevel =
-                node.status !== "offline" && node.thickness <= node.minThicknessTarget
+                node.status !== "offline" &&
+                node.thickness <= node.minThicknessTarget
                   ? "critical"
-                  : node.status !== "offline" && node.thickness <= node.minThicknessTarget * 1.2
+                  : node.status !== "offline" &&
+                      node.thickness <= node.minThicknessTarget * 1.2
                     ? "warning"
-                    : null
+                    : null;
               return (
                 <li
                   key={node.id}
@@ -375,12 +356,11 @@ export function OverviewView() {
                   </div>
                   <StatusBadge status={node.status} />
                 </li>
-              )
+              );
             })}
           </ul>
         </Card>
       </div>
-
     </div>
-  )
+  );
 }

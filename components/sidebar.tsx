@@ -1,31 +1,40 @@
-"use client"
+"use client";
 
-import { cn } from "@/lib/utils"
+import { cn } from "@/lib/utils";
 import {
   Activity,
   Boxes,
   ChevronLeft,
   ChevronRight,
   Cpu,
+  Globe2,
   LayoutDashboard,
   LineChart,
   LogOut,
   Network,
   ScrollText,
   X,
-} from "lucide-react"
-import { logout } from "@/lib/auth-store"
+} from "lucide-react";
+import { logout } from "@/lib/auth-store";
 
-export type View = "overview" | "forecast" | "logs" | "factory" | "streamlit" | "dashboard2"
+export type View =
+  | "fleet"
+  | "overview"
+  | "forecast"
+  | "logs"
+  | "factory"
+  | "streamlit"
+  | "dashboard2";
 
 const NAV: { id: View; label: string; icon: typeof Activity }[] = [
-  { id: "overview", label: "Overview & Factory", icon: Boxes },
+  { id: "fleet", label: "Global Fleet View", icon: Globe2 },
+  { id: "dashboard2", label: "Overview & Factory", icon: Boxes },
+  // { id: "overview", label: "Dashboard v.2", icon: LayoutDashboard },
   { id: "forecast", label: "Manual Forecast", icon: LineChart },
   { id: "logs", label: "Model Logs & Eval", icon: ScrollText },
   { id: "factory", label: "Factory Floor", icon: Network },
-  { id: "dashboard2", label: "Dashboard v.2", icon: LayoutDashboard },
   { id: "streamlit", label: "ML Studio", icon: Cpu },
-]
+];
 
 export function Sidebar({
   active,
@@ -35,12 +44,12 @@ export function Sidebar({
   onToggle,
   onClose,
 }: {
-  active: View
-  onChange: (v: View) => void
-  onLogout: () => void
-  collapsed?: boolean
-  onToggle?: () => void
-  onClose?: () => void
+  active: View;
+  onChange: (v: View) => void;
+  onLogout: () => void;
+  collapsed?: boolean;
+  onToggle?: () => void;
+  onClose?: () => void;
 }) {
   return (
     <aside
@@ -100,11 +109,14 @@ export function Sidebar({
 
       {/* Nav */}
       <nav
-        className={cn("flex flex-col gap-0.5 py-3", collapsed ? "px-1.5" : "px-2")}
+        className={cn(
+          "flex flex-col gap-0.5 py-3",
+          collapsed ? "px-1.5" : "px-2",
+        )}
         aria-label="Primary"
       >
         {NAV.map(({ id, label, icon: Icon }) => {
-          const isActive = active === id
+          const isActive = active === id;
           return (
             <button
               key={id}
@@ -127,7 +139,7 @@ export function Sidebar({
               />
               {!collapsed && <span className="truncate">{label}</span>}
             </button>
-          )
+          );
         })}
       </nav>
 
@@ -145,16 +157,16 @@ export function Sidebar({
             title="Inference engine live"
           >
             <span className="relative flex size-2">
-              <span className="absolute inline-flex size-full animate-ping rounded-full bg-[var(--status-normal)] opacity-60" />
-              <span className="relative inline-flex size-2 rounded-full bg-[var(--status-normal)]" />
+              <span className="absolute inline-flex size-full animate-ping rounded-full bg-status-normal opacity-60" />
+              <span className="relative inline-flex size-2 rounded-full bg-status-normal" />
             </span>
           </div>
         ) : (
           <div className="rounded-md border border-sidebar-border bg-card/50 p-3">
             <div className="flex items-center gap-2">
               <span className="relative flex size-2">
-                <span className="absolute inline-flex size-full animate-ping rounded-full bg-[var(--status-normal)] opacity-60" />
-                <span className="relative inline-flex size-2 rounded-full bg-[var(--status-normal)]" />
+                <span className="absolute inline-flex size-full animate-ping rounded-full bg-status-normal opacity-60" />
+                <span className="relative inline-flex size-2 rounded-full bg-status-normal" />
               </span>
               <p className="text-xs font-medium text-sidebar-foreground">
                 Inference engine live
@@ -171,20 +183,21 @@ export function Sidebar({
           type="button"
           title={collapsed ? "Sign out" : undefined}
           onClick={() => {
-            logout()
-            onLogout()
+            logout();
+            onLogout();
           }}
           className={cn(
             "flex items-center rounded-md text-sm font-medium text-muted-foreground transition-colors hover:bg-sidebar-accent/60 hover:text-sidebar-foreground",
             collapsed ? "h-10 justify-center px-0" : "gap-3 px-3 py-2",
           )}
         >
-          <LogOut className={cn("shrink-0", collapsed ? "size-5" : "size-4")} aria-hidden="true" />
+          <LogOut
+            className={cn("shrink-0", collapsed ? "size-5" : "size-4")}
+            aria-hidden="true"
+          />
           {!collapsed && <span>Sign out</span>}
         </button>
-
-
       </div>
     </aside>
-  )
+  );
 }

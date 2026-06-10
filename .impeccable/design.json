@@ -1,0 +1,209 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-06-10T00:00:00Z",
+  "title": "Design System: PipeGuard",
+  "extensions": {
+    "colorMeta": {
+      "bunker": {
+        "role": "neutral",
+        "displayName": "Bunker",
+        "canonical": "oklch(0.16 0.005 240)",
+        "tonalRamp": ["oklch(0.06 0.003 240)", "oklch(0.10 0.004 240)", "oklch(0.16 0.005 240)", "oklch(0.20 0.006 240)", "oklch(0.26 0.007 240)", "oklch(0.40 0.005 240)", "oklch(0.68 0.01 240)", "oklch(0.96 0.003 240)"]
+      },
+      "bunker-surface": {
+        "role": "neutral",
+        "displayName": "Bunker Surface",
+        "canonical": "oklch(0.20 0.006 240)",
+        "tonalRamp": ["oklch(0.06 0.003 240)", "oklch(0.10 0.004 240)", "oklch(0.16 0.005 240)", "oklch(0.20 0.006 240)", "oklch(0.26 0.007 240)", "oklch(0.40 0.005 240)", "oklch(0.68 0.01 240)", "oklch(0.96 0.003 240)"]
+      },
+      "bunker-raised": {
+        "role": "neutral",
+        "displayName": "Bunker Raised",
+        "canonical": "oklch(0.26 0.007 240)",
+        "tonalRamp": ["oklch(0.06 0.003 240)", "oklch(0.10 0.004 240)", "oklch(0.16 0.005 240)", "oklch(0.20 0.006 240)", "oklch(0.26 0.007 240)", "oklch(0.40 0.005 240)", "oklch(0.68 0.01 240)", "oklch(0.96 0.003 240)"]
+      },
+      "steel-white": {
+        "role": "neutral",
+        "displayName": "Steel White",
+        "canonical": "oklch(0.96 0.003 240)",
+        "tonalRamp": ["oklch(0.06 0.003 240)", "oklch(0.10 0.004 240)", "oklch(0.16 0.005 240)", "oklch(0.20 0.006 240)", "oklch(0.26 0.007 240)", "oklch(0.40 0.005 240)", "oklch(0.68 0.01 240)", "oklch(0.96 0.003 240)"]
+      },
+      "steel-muted": {
+        "role": "neutral",
+        "displayName": "Steel Muted",
+        "canonical": "oklch(0.68 0.01 240)",
+        "tonalRamp": ["oklch(0.06 0.003 240)", "oklch(0.10 0.004 240)", "oklch(0.16 0.005 240)", "oklch(0.20 0.006 240)", "oklch(0.26 0.007 240)", "oklch(0.40 0.005 240)", "oklch(0.68 0.01 240)", "oklch(0.96 0.003 240)"]
+      },
+      "ghost-border": {
+        "role": "neutral",
+        "displayName": "Ghost Border",
+        "canonical": "oklch(1 0 0 / 10%)",
+        "tonalRamp": ["oklch(1 0 0 / 5%)", "oklch(1 0 0 / 8%)", "oklch(1 0 0 / 10%)", "oklch(1 0 0 / 15%)", "oklch(1 0 0 / 20%)", "oklch(1 0 0 / 35%)", "oklch(1 0 0 / 60%)", "oklch(1 0 0 / 100%)"]
+      },
+      "flux-blue": {
+        "role": "primary",
+        "displayName": "Flux Blue",
+        "canonical": "oklch(0.65 0.16 230)",
+        "tonalRamp": ["oklch(0.10 0.04 230)", "oklch(0.20 0.07 230)", "oklch(0.30 0.09 230)", "oklch(0.42 0.11 230)", "oklch(0.52 0.13 230)", "oklch(0.65 0.16 230)", "oklch(0.78 0.12 230)", "oklch(0.90 0.06 230)"]
+      },
+      "all-clear": {
+        "role": "semantic-status",
+        "displayName": "All Clear",
+        "canonical": "oklch(0.72 0.17 145)",
+        "tonalRamp": ["oklch(0.12 0.06 145)", "oklch(0.22 0.08 145)", "oklch(0.33 0.10 145)", "oklch(0.45 0.12 145)", "oklch(0.57 0.14 145)", "oklch(0.72 0.17 145)", "oklch(0.83 0.12 145)", "oklch(0.92 0.06 145)"]
+      },
+      "caution-amber": {
+        "role": "semantic-status",
+        "displayName": "Caution Amber",
+        "canonical": "oklch(0.78 0.16 80)",
+        "tonalRamp": ["oklch(0.12 0.05 80)", "oklch(0.24 0.07 80)", "oklch(0.36 0.09 80)", "oklch(0.49 0.11 80)", "oklch(0.62 0.14 80)", "oklch(0.78 0.16 80)", "oklch(0.87 0.10 80)", "oklch(0.93 0.05 80)"]
+      },
+      "alarm-red": {
+        "role": "semantic-status",
+        "displayName": "Alarm Red",
+        "canonical": "oklch(0.62 0.21 25)",
+        "tonalRamp": ["oklch(0.12 0.07 25)", "oklch(0.22 0.11 25)", "oklch(0.33 0.14 25)", "oklch(0.44 0.17 25)", "oklch(0.53 0.19 25)", "oklch(0.62 0.21 25)", "oklch(0.75 0.14 25)", "oklch(0.88 0.07 25)"]
+      },
+      "cold-gray": {
+        "role": "semantic-status",
+        "displayName": "Cold Gray",
+        "canonical": "oklch(0.60 0.01 240)",
+        "tonalRamp": ["oklch(0.10 0.01 240)", "oklch(0.20 0.01 240)", "oklch(0.32 0.01 240)", "oklch(0.44 0.01 240)", "oklch(0.55 0.01 240)", "oklch(0.60 0.01 240)", "oklch(0.72 0.01 240)", "oklch(0.86 0.01 240)"]
+      }
+    },
+    "typographyMeta": {
+      "title": { "displayName": "Title", "purpose": "Page-level headings in the header bar. One per view." },
+      "body": { "displayName": "Body", "purpose": "Primary reading text — descriptions, table cells, list items, form content." },
+      "label": { "displayName": "Label", "purpose": "Secondary labels, muted metadata, stat descriptions below KPI values." },
+      "mono": { "displayName": "Mono Data", "purpose": "All numeric readings — thickness in mm, KPI counts, metric values, timestamps. Requires tabular-nums." }
+    },
+    "shadows": [
+      { "name": "login-float", "value": "0 20px 60px rgba(0,0,0,0.5)", "purpose": "Login card elevation over the page background. The only shadow in the system." }
+    ],
+    "motion": [
+      { "name": "ease-state", "value": "150ms ease-out", "purpose": "Default transition for all state changes: hover, focus, active, nav selection." },
+      { "name": "ease-sidebar", "value": "200ms ease-out", "purpose": "Sidebar expand/collapse width transition." },
+      { "name": "ease-drawer", "value": "200ms ease-out", "purpose": "Mobile nav drawer slide-in/out." }
+    ],
+    "breakpoints": [
+      { "name": "md", "value": "768px", "purpose": "Mobile/desktop layout switch: sidebar show/hide, header layout reflow." }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Main CTA and form submit. Flux Blue background, near-black text, 32px height.",
+      "html": "<button class=\"ds-btn-primary\">Sign in</button>",
+      "css": ".ds-btn-primary { display: inline-flex; align-items: center; justify-content: center; height: 32px; padding: 0 10px; background: var(--primary); color: var(--primary-foreground); border: 1px solid transparent; border-radius: calc(var(--radius) * 0.8); font-size: 14px; font-weight: 500; font-family: inherit; cursor: pointer; transition: opacity 150ms ease-out; white-space: nowrap; } .ds-btn-primary:hover { opacity: 0.85; } .ds-btn-primary:focus-visible { outline: 3px solid color-mix(in oklch, var(--ring) 50%, transparent); outline-offset: 2px; } .ds-btn-primary:active { transform: translateY(1px); } .ds-btn-primary:disabled { opacity: 0.5; pointer-events: none; }"
+    },
+    {
+      "name": "Ghost Button",
+      "kind": "button",
+      "refersTo": "button-ghost",
+      "description": "Secondary action. Transparent at rest, Bunker Raised on hover.",
+      "html": "<button class=\"ds-btn-ghost\">Cancel</button>",
+      "css": ".ds-btn-ghost { display: inline-flex; align-items: center; justify-content: center; height: 32px; padding: 0 10px; background: transparent; color: var(--muted-foreground); border: 1px solid transparent; border-radius: calc(var(--radius) * 0.8); font-size: 14px; font-weight: 500; font-family: inherit; cursor: pointer; transition: background 150ms ease-out, color 150ms ease-out; } .ds-btn-ghost:hover { background: var(--muted); color: var(--foreground); } .ds-btn-ghost:focus-visible { outline: 3px solid color-mix(in oklch, var(--ring) 50%, transparent); outline-offset: 2px; }"
+    },
+    {
+      "name": "Status Badge",
+      "kind": "chip",
+      "refersTo": "status-badge-normal",
+      "description": "Sensor status indicator. Round pill, status-colored border + 12% fill + dot + label. Four variants.",
+      "html": "<span class=\"ds-status-badge ds-status-normal\"><span class=\"ds-status-dot\"></span>Normal</span>",
+      "css": ".ds-status-badge { display: inline-flex; align-items: center; gap: 6px; padding: 2px 10px; border-radius: 9999px; border: 1px solid; font-size: 12px; font-weight: 500; font-family: inherit; line-height: 1.4; } .ds-status-dot { width: 6px; height: 6px; border-radius: 9999px; flex-shrink: 0; } .ds-status-normal { color: var(--status-normal); border-color: var(--status-normal); background: color-mix(in oklch, var(--status-normal) 12%, transparent); } .ds-status-normal .ds-status-dot { background: var(--status-normal); } .ds-status-warning { color: var(--status-warning); border-color: var(--status-warning); background: color-mix(in oklch, var(--status-warning) 12%, transparent); } .ds-status-warning .ds-status-dot { background: var(--status-warning); } .ds-status-error { color: var(--status-error); border-color: var(--status-error); background: color-mix(in oklch, var(--status-error) 12%, transparent); } .ds-status-error .ds-status-dot { background: var(--status-error); } .ds-status-offline { color: var(--status-offline); border-color: var(--status-offline); background: color-mix(in oklch, var(--status-offline) 12%, transparent); } .ds-status-offline .ds-status-dot { background: var(--status-offline); }"
+    },
+    {
+      "name": "Card",
+      "kind": "card",
+      "refersTo": "card",
+      "description": "Primary container. Bunker Surface bg, Ghost Border, xl radius (11px), 16px padding.",
+      "html": "<div class=\"ds-card\"><span class=\"ds-card-label\">Wall Thickness</span><span class=\"ds-card-value\">8.4<span class=\"ds-card-unit\"> mm</span></span></div>",
+      "css": ".ds-card { background: var(--card); border: 1px solid var(--border); border-radius: calc(var(--radius) * 1.4); padding: 16px; font-family: inherit; } .ds-card-label { display: block; font-size: 12px; font-weight: 500; color: var(--muted-foreground); margin-bottom: 8px; } .ds-card-value { display: block; font-size: 30px; font-weight: 600; font-variant-numeric: tabular-nums; color: var(--foreground); line-height: 1; } .ds-card-unit { font-size: 13px; font-weight: 400; color: var(--muted-foreground); }"
+    },
+    {
+      "name": "Input Field",
+      "kind": "input",
+      "refersTo": null,
+      "description": "Bordered input. Bunker Surface bg, Ghost Border, rounded-md. Left-icon inset pattern.",
+      "html": "<div class=\"ds-input-wrap\"><svg class=\"ds-input-icon\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\" stroke-width=\"2\"><circle cx=\"11\" cy=\"11\" r=\"8\"/><path d=\"m21 21-4.35-4.35\"/></svg><input class=\"ds-input\" placeholder=\"Search assets...\" type=\"search\"></div>",
+      "css": ".ds-input-wrap { display: flex; align-items: center; gap: 8px; background: var(--card); border: 1px solid var(--border); border-radius: calc(var(--radius) * 0.8); padding: 0 12px; height: 36px; transition: border-color 150ms ease-out, box-shadow 150ms ease-out; } .ds-input-icon { width: 16px; height: 16px; color: var(--muted-foreground); flex-shrink: 0; } .ds-input { background: transparent; border: none; outline: none; font-size: 14px; color: var(--foreground); font-family: inherit; flex: 1; min-width: 0; } .ds-input::placeholder { color: var(--muted-foreground); } .ds-input-wrap:focus-within { border-color: var(--ring); box-shadow: 0 0 0 3px color-mix(in oklch, var(--ring) 25%, transparent); }"
+    },
+    {
+      "name": "Sidebar Nav Item",
+      "kind": "nav",
+      "refersTo": null,
+      "description": "Navigation link in the collapsible sidebar. Muted at rest, Bunker Raised fill when active.",
+      "html": "<a class=\"ds-nav-item ds-nav-active\" href=\"#\"><svg class=\"ds-nav-icon\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\" stroke-width=\"2\"><rect x=\"3\" y=\"3\" width=\"18\" height=\"18\" rx=\"2\"/><path d=\"M3 9h18M9 21V9\"/></svg><span class=\"ds-nav-label\">Overview</span></a>",
+      "css": ".ds-nav-item { display: flex; align-items: center; gap: 10px; padding: 7px 10px; border-radius: calc(var(--radius) * 0.8); font-size: 14px; font-weight: 500; color: var(--muted-foreground); text-decoration: none; transition: background 150ms ease-out, color 150ms ease-out; font-family: inherit; } .ds-nav-icon { width: 16px; height: 16px; flex-shrink: 0; } .ds-nav-label { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; } .ds-nav-item:hover, .ds-nav-item.ds-nav-active { background: var(--sidebar-accent); color: var(--sidebar-foreground); }"
+    },
+    {
+      "name": "Alert Banner",
+      "kind": "custom",
+      "refersTo": null,
+      "description": "Threshold breach notification. Full-width, full border + tinted background. No side stripe.",
+      "html": "<div class=\"ds-alert ds-alert-warning\" role=\"alert\"><svg class=\"ds-alert-icon\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\" stroke-width=\"2\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" d=\"M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9\"/></svg><span class=\"ds-alert-title\">Thickness warning - 2 nodes approaching minimum</span></div>",
+      "css": ".ds-alert { display: flex; align-items: flex-start; gap: 10px; padding: 12px 16px; border-radius: var(--radius); border: 1px solid; font-family: inherit; } .ds-alert-icon { width: 16px; height: 16px; flex-shrink: 0; margin-top: 2px; } .ds-alert-title { font-size: 14px; font-weight: 600; line-height: 1.4; } .ds-alert-warning { border-color: color-mix(in oklch, var(--status-warning) 40%, transparent); background: color-mix(in oklch, var(--status-warning) 8%, transparent); color: var(--status-warning); } .ds-alert-error { border-color: color-mix(in oklch, var(--status-error) 40%, transparent); background: color-mix(in oklch, var(--status-error) 8%, transparent); color: var(--status-error); }"
+    },
+    {
+      "name": "KPI Data Display",
+      "kind": "custom",
+      "refersTo": null,
+      "description": "Numeric KPI with label. tabular-nums, 30px value. Used in status summary cards.",
+      "html": "<div class=\"ds-kpi\"><span class=\"ds-kpi-value\">8.4<span class=\"ds-kpi-unit\"> mm</span></span><span class=\"ds-kpi-label\">Wall thickness</span></div>",
+      "css": ".ds-kpi { display: flex; flex-direction: column; gap: 2px; font-family: inherit; } .ds-kpi-value { font-size: 30px; font-weight: 600; font-variant-numeric: tabular-nums; line-height: 1; color: var(--foreground); } .ds-kpi-unit { font-size: 13px; font-weight: 400; color: var(--muted-foreground); } .ds-kpi-label { font-size: 12px; font-weight: 500; color: var(--muted-foreground); margin-top: 4px; }"
+    },
+    {
+      "name": "Status Indicator Dot",
+      "kind": "chip",
+      "refersTo": null,
+      "description": "Minimal inline status signal. 10px circle + label. Always paired with text, never standalone.",
+      "html": "<div class=\"ds-indicator-row\"><span class=\"ds-indicator ds-indicator-normal\"></span><span class=\"ds-indicator-label\">4/5 online</span></div>",
+      "css": ".ds-indicator-row { display: flex; align-items: center; gap: 8px; font-family: inherit; } .ds-indicator { width: 10px; height: 10px; border-radius: 9999px; flex-shrink: 0; } .ds-indicator-normal { background: var(--status-normal); } .ds-indicator-warning { background: var(--status-warning); } .ds-indicator-error { background: var(--status-error); } .ds-indicator-offline { background: var(--status-offline); } .ds-indicator-label { font-size: 14px; font-weight: 500; color: var(--foreground); font-variant-numeric: tabular-nums; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Plant Operations Room",
+    "overview": "PipeGuard is built for people who can't afford to be wrong. The design language is borrowed from industrial control panels, not software products: every indicator in a fixed position, every color carrying exactly one meaning, nothing decorative that earns no information. Operators scan for anomalies in under two seconds; engineers dig into trend data without fighting the interface.\n\nThe surface is dark blue-steel — a bunker, not a night mode. Depth comes from three tonal surface steps (Bunker → Bunker Surface → Bunker Raised), not from shadows or gradients. The sole interactive accent, Flux Blue, appears only on active elements, primary buttons, and focus rings. Its rarity is what gives it authority. The four status colors — All Clear green, Caution Amber, Alarm Red, Cold Gray — are the loudest signals on any screen; when nothing is wrong, the dashboard is quiet.\n\nThis system explicitly rejects: generic SaaS aesthetics (hero-metric cards, purple gradients), cyberpunk gaming dashboards (neon glows, scanline overlays, gratuitous animation), enterprise gray (flat, lifeless SCADA-era look), and chart-forward over-decoration.",
+    "keyCharacteristics": [
+      "Dark blue-steel surfaces — tonal depth via three surface layers, no decorative shadows",
+      "One interactive accent (Flux Blue) — restricted to interactive elements and focus rings only",
+      "Four semantic status colors — the highest-contrast signals on any screen; silent when not triggered",
+      "Single sans-serif family (Geist Sans) + mono for numeric data (Geist Mono)",
+      "Compact density: 32px button height, 8px base radius, padding varies by context not aesthetics",
+      "150ms ease-out state transitions only — zero decorative motion"
+    ],
+    "rules": [
+      { "name": "The One Accent Rule", "body": "Flux Blue is the only interactive accent. Do not use it for decorative highlights, chart fills unrelated to primary data series, or any non-interactive element.", "section": "colors" },
+      { "name": "The Status-First Rule", "body": "Status colors are reserved for status. Never use All Clear green for a success toast, Alarm Red for a sale badge, or any status color for non-status UI. The semantic contract is system-wide.", "section": "colors" },
+      { "name": "The Color-Mix Rule", "body": "All tinted status backgrounds use color-mix(in oklch, var(--status-X) 8-12%, transparent). Never hardcode a hex approximation.", "section": "colors" },
+      { "name": "The Tabular Commitment Rule", "body": "Every numeric value in the UI must use font-variant-numeric: tabular-nums. Proportional numbers in data context cause columns to jitter on update and erode the precision-instrument feel.", "section": "typography" },
+      { "name": "The Scale Compression Rule", "body": "The type scale uses a tight ratio (1.15-1.2x). The biggest heading is 20px; data values at 30px are the KPI exception only.", "section": "typography" },
+      { "name": "The Flat-First Rule", "body": "Surfaces are flat at rest. Depth is conveyed by tonal steps, not shadows. Reserve shadows for modal overlays and the login screen only.", "section": "elevation" }
+    ],
+    "dos": [
+      "Do use font-variant-numeric: tabular-nums on every numeric value.",
+      "Do drive all status colors via var(--status-normal/warning/error/offline) tokens.",
+      "Do use color-mix(in oklch, var(--status-X) 8-12%, transparent) for tinted status fills.",
+      "Do restrict Flux Blue to interactive elements: primary buttons, active nav items, focus rings, primary chart series.",
+      "Do accompany every status color with a text label or icon — color alone is never the sole status indicator.",
+      "Do keep all numeric readings in Geist Mono.",
+      "Do use Ghost Border (oklch(1 0 0 / 10%)) universally for container borders.",
+      "Do transition state changes at 150ms with an ease-out curve.",
+      "Do verify Steel Muted achieves at least 4.5:1 contrast against Bunker Surface on any new surface."
+    ],
+    "donts": [
+      "Don't use gradient text (background-clip: text + gradient). Single solid colors only.",
+      "Don't use side-stripe borders (border-left > 1px as a colored accent). Full borders + tinted backgrounds are correct.",
+      "Don't add neon glows, scanline overlays, or gratuitous animation.",
+      "Don't use purple gradients, hero-metric card layouts, or generic SaaS aesthetic patterns.",
+      "Don't flatten the dark surfaces toward achromatic gray. Bunker's C: 0.005, H: 240 is the minimum acceptable tint.",
+      "Don't use decorative motion: no orchestrated page-load sequences, no chart-entrance animations.",
+      "Don't display numeric data without tabular-nums alignment.",
+      "Don't add shadows to in-app cards or panels.",
+      "Don't use All Clear green, Caution Amber, or Alarm Red for non-status purposes.",
+      "Don't produce chart-forward over-decoration: animation-heavy chart reveals, gratuitous data viz effects."
+    ]
+  }
+}
