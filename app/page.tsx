@@ -1,33 +1,33 @@
-"use client"
+"use client";
 
-import { useEffect, useState } from "react"
-import { cn } from "@/lib/utils"
-import { Header } from "@/components/header"
-import { Sidebar, type View } from "@/components/sidebar"
-import { OverviewView } from "@/components/overview-view"
-import { ForecastView } from "@/components/forecast-view"
-import { LogsView } from "@/components/logs-view"
-import { FactoryFloorView } from "@/components/factory-floor-view"
-import { StreamlitView } from "@/components/streamlit-view"
-import { DashboardV2View } from "@/components/dashboard-v2-view"
-import { GlobalFleetView } from "@/components/global-fleet-view"
-import { LoginScreen } from "@/components/login-screen"
-import { isAuthenticated } from "@/lib/auth-store"
+import { useEffect, useState } from "react";
+import { cn } from "@/lib/utils";
+import { Header } from "@/components/header";
+import { Sidebar, type View } from "@/components/sidebar";
+import { OverviewView } from "@/components/overview-view";
+import { ForecastView } from "@/components/forecast-view";
+import { LogsView } from "@/components/logs-view";
+import { FactoryFloorView } from "@/components/factory-floor-view";
+import { StreamlitView } from "@/components/streamlit-view";
+import { DashboardV2View } from "@/components/dashboard-v2-view";
+import { GlobalFleetView } from "@/components/global-fleet-view";
+import { LoginScreen } from "@/components/login-screen";
+import { isAuthenticated } from "@/lib/auth-store";
 
 export default function Page() {
-  const [authed, setAuthed] = useState<boolean | null>(null)
-  const [view, setView] = useState<View>("overview")
-  const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
-  const [mobileNavOpen, setMobileNavOpen] = useState(false)
+  const [authed, setAuthed] = useState<boolean | null>(null);
+  const [view, setView] = useState<View>("fleet");
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const [mobileNavOpen, setMobileNavOpen] = useState(false);
 
   useEffect(() => {
-    setAuthed(isAuthenticated())
-  }, [])
+    setAuthed(isAuthenticated());
+  }, []);
 
-  if (authed === null) return null
+  if (authed === null) return null;
 
   if (!authed) {
-    return <LoginScreen onSuccess={() => setAuthed(true)} />
+    return <LoginScreen onSuccess={() => setAuthed(true)} />;
   }
 
   // Dashboard v.2 — full-screen kiosk mode, no sidebar or header
@@ -36,7 +36,7 @@ export default function Page() {
       <div className="h-screen w-screen overflow-hidden bg-background">
         <DashboardV2View onNavigateHome={() => setView("overview")} />
       </div>
-    )
+    );
   }
 
   return (
@@ -66,12 +66,12 @@ export default function Page() {
           <Sidebar
             active={view}
             onChange={(v) => {
-              setView(v)
-              setMobileNavOpen(false)
+              setView(v);
+              setMobileNavOpen(false);
             }}
             onLogout={() => {
-              setAuthed(false)
-              setMobileNavOpen(false)
+              setAuthed(false);
+              setMobileNavOpen(false);
             }}
             onClose={() => setMobileNavOpen(false)}
           />
@@ -91,10 +91,7 @@ export default function Page() {
         </div>
 
         <div className="flex min-w-0 flex-1 flex-col">
-          <Header
-            view={view}
-            onMobileMenuOpen={() => setMobileNavOpen(true)}
-          />
+          <Header view={view} onMobileMenuOpen={() => setMobileNavOpen(true)} />
 
           <main
             className={cn(
@@ -105,7 +102,7 @@ export default function Page() {
             )}
           >
             {view === "fleet" && <GlobalFleetView onChange={setView} />}
-            {view === "overview" && <OverviewView />}
+            {/* {view === "overview" && <OverviewView />} */}
             {view === "forecast" && <ForecastView />}
             {view === "logs" && <LogsView />}
             {view === "factory" && <FactoryFloorView />}
@@ -114,5 +111,5 @@ export default function Page() {
         </div>
       </div>
     </>
-  )
+  );
 }
