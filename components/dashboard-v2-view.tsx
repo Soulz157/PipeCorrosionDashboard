@@ -4,11 +4,14 @@ import { useState } from "react"
 import { FactoryCanvas } from "@/components/factory-canvas"
 import {
   STATUS_META,
+  perNodePowerConsumption,
+  perNodePowerConsumptionHistorical,
   perNodeThicknessTrend,
+  perNodeThicknessTrendHistorical,
   sensorNodes,
   statusCounts,
 } from "@/lib/mock-data"
-import { Home, TrendingDown, X } from "lucide-react"
+import { Home } from "lucide-react"
 import {
   Area,
   AreaChart,
@@ -41,10 +44,13 @@ const BAR_BG: React.CSSProperties = {
   ...SCANLINE,
 }
 
-// Status bar height in px — keep in sync with h-11 (44px)
-const STATUS_BAR_H = 44
+type ChartRow = Record<string, number | string>
 
-function TrendTooltip({ active, payload, label }: any) {
+/** Schematic height clamp (vh) while dragging the splitter */
+const SPLIT_MIN = 20
+const SPLIT_MAX = 75
+
+function TrendTooltip({ active, payload, label, unit = "mm" }: any) {
   if (!active || !payload?.length) return null
   return (
     <div
@@ -62,11 +68,170 @@ function TrendTooltip({ active, payload, label }: any) {
             className="ml-auto font-mono text-[10px] font-bold tabular-nums"
             style={{ color: p.color }}
           >
-            {p.value} mm
+            {p.value} {unit}
           </span>
         </div>
       ))}
     </div>
+  )
+}
+
+/** A single multi-line chart (one series per active node) keyed by id. */
+function NodeChart({
+  data,
+  unit,
+  domain,
+  tickFormatter,
+  minLine,
+  gradPrefix,
+}: {
+  data: ChartRow[]
+  unit: string
+  domain: [number, number]
+  tickFormatter: (v: number) => string
+  minLine?: number
+  gradPrefix: string
+}) {
+  return (
+    <ResponsiveContainer width="100%" height="100%">
+      <AreaChart data={data} margin={{ top: 4, right: 10, left: -18, bottom: 0 }}>
+        <defs>
+          {ACTIVE_NODES.map((node) => {
+            const c = NODE_CHART_COLORS[node.id]
+            return (
+              <linearGradient key={node.id} id={`${gradPrefix}-${node.id}`} x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stopColor={c} stopOpacity={0.25} />
+                <stop offset="100%" stopColor={c} stopOpacity={0} />
+              </linearGradient>
+            )
+          })}
+        </defs>
+        <CartesianGrid strokeDasharray="2 4" stroke="oklch(1 0 0 / 7%)" vertical={false} />
+        <XAxis
+          dataKey="month"
+          tick={{ fill: "var(--muted-foreground)", fontSize: 9, fontFamily: "var(--font-mono)" }}
+          tickLine={false}
+          axisLine={false}
+          minTickGap={32}
+        />
+        <YAxis
+          domain={domain}
+          tick={{ fill: "var(--muted-foreground)", fontSize: 9, fontFamily: "var(--font-mono)" }}
+          tickLine={false}
+          axisLine={false}
+          tickFormatter={tickFormatter}
+        />
+        <Tooltip content={<TrendTooltip unit={unit} />} />
+        {minLine !== undefined && (
+          <ReferenceLine
+            y={minLine}
+            stroke="var(--status-warning)"
+            strokeDasharray="4 3"
+            strokeWidth={1}
+            label={{
+              value: "min",
+              position: "insideTopRight",
+              fill: "var(--status-warning)",
+              fontSize: 8,
+              fontFamily: "var(--font-mono)",
+            }}
+          />
+        )}
+        {ACTIVE_NODES.map((node) => (
+          <Area
+            key={node.id}
+            type="monotone"
+            dataKey={node.id}
+            name={node.location}
+            stroke={NODE_CHART_COLORS[node.id]}
+            strokeWidth={1.5}
+            fill={`url(#${gradPrefix}-${node.id})`}
+            dot={false}
+            activeDot={{ r: 3, strokeWidth: 0 }}
+          />
+        ))}
+      </AreaChart>
+    </ResponsiveContainer>
+  )
+}
+
+/** One titled visual block: a header + a wall-thickness and a power chart. */
+function TrendPanel({
+  title,
+  thicknessData,
+  powerData,
+  gradPrefix,
+}: {
+  title: string
+  thicknessData: ChartRow[]
+  powerData: ChartRow[]
+  gradPrefix: string
+}) {
+  return (
+    <section style={{ borderBottom: "1px solid oklch(1 0 0 / 8%)" }}>
+      {/* Panel header */}
+      <div
+        className="flex items-center gap-2 px-4 py-2"
+        style={{ borderBottom: "1px solid oklch(1 0 0 / 8%)" }}
+      >
+        <span
+          className="inline-flex size-1.5 rounded-full"
+          style={{ backgroundColor: "var(--primary)" }}
+        />
+        <p className="font-mono text-[11px] font-bold uppercase tracking-[0.25em] text-foreground">
+          {title}
+        </p>
+        {/* Node legend */}
+        <div className="ml-auto flex flex-wrap gap-3">
+          {ACTIVE_NODES.map((n) => (
+            <span key={n.id} className="flex items-center gap-1.5 font-mono text-[9px]">
+              <span
+                className="size-1.5 rounded-full"
+                style={{
+                  backgroundColor: NODE_CHART_COLORS[n.id],
+                  boxShadow: `0 0 4px ${NODE_CHART_COLORS[n.id]}`,
+                }}
+                aria-hidden="true"
+              />
+              <span style={{ color: NODE_CHART_COLORS[n.id] }}>{n.id}</span>
+            </span>
+          ))}
+        </div>
+      </div>
+
+      {/* Charts */}
+      <div className="grid grid-cols-1 gap-px lg:grid-cols-2">
+        <div className="px-2 py-2">
+          <p className="px-2 pb-1 font-mono text-[8px] uppercase tracking-[0.2em] text-muted-foreground">
+            Wall Thickness · mm
+          </p>
+          <div className="h-44 w-full">
+            <NodeChart
+              data={thicknessData}
+              unit="mm"
+              domain={[0, 14]}
+              tickFormatter={(v) => `${v}mm`}
+              minLine={6}
+              gradPrefix={`${gradPrefix}-wt`}
+            />
+          </div>
+        </div>
+        <div className="px-2 py-2">
+          <p className="px-2 pb-1 font-mono text-[8px] uppercase tracking-[0.2em] text-muted-foreground">
+            Power Consumption · kW
+          </p>
+          <div className="h-44 w-full">
+            <NodeChart
+              data={powerData}
+              unit="kW"
+              domain={[0, 160]}
+              tickFormatter={(v) => `${v}`}
+              gradPrefix={`${gradPrefix}-pw`}
+            />
+          </div>
+        </div>
+      </div>
+    </section>
   )
 }
 
@@ -75,7 +240,24 @@ export function DashboardV2View({
 }: {
   onNavigateHome?: () => void
 }) {
-  const [trendOpen, setTrendOpen] = useState(false)
+  const [splitTop, setSplitTop] = useState(50)
+  const [dragging, setDragging] = useState(false)
+
+  const startDrag = (e: React.PointerEvent) => {
+    e.preventDefault()
+    setDragging(true)
+    const move = (ev: PointerEvent) => {
+      const pct = (ev.clientY / window.innerHeight) * 100
+      setSplitTop(Math.min(SPLIT_MAX, Math.max(SPLIT_MIN, pct)))
+    }
+    const up = () => {
+      setDragging(false)
+      window.removeEventListener("pointermove", move)
+      window.removeEventListener("pointerup", up)
+    }
+    window.addEventListener("pointermove", move)
+    window.addEventListener("pointerup", up)
+  }
 
   const alertCount = sensorNodes.filter(
     (n) => n.status !== "offline" && n.thickness <= n.minThicknessTarget * 1.2,
@@ -85,139 +267,72 @@ export function DashboardV2View({
     <div className="relative flex h-full w-full flex-col">
 
       {/* ═══════════════════════════════════
-          Canvas — fills all remaining space
+          Schematic — pinned on top, resizable height, stays interactive
       ═══════════════════════════════════ */}
-      <div className="relative min-h-0 flex-1 overflow-hidden">
+      <div
+        className={`relative min-h-0 shrink-0 overflow-hidden ${
+          dragging ? "" : "transition-[height] duration-200 ease-out"
+        }`}
+        style={{ height: `${splitTop}vh` }}
+      >
         <FactoryCanvas />
       </div>
 
       {/* ═══════════════════════════════════
-          Trend panel — slides up from above status bar
+          Divider — draggable splitter (top schematic ↕ bottom trends)
       ═══════════════════════════════════ */}
       <div
-        className={`absolute left-0 right-0 z-20 transition-transform duration-300 ${
-          trendOpen ? "translate-y-0" : "translate-y-full"
-        }`}
-        style={{ bottom: STATUS_BAR_H }}
+        role="separator"
+        aria-orientation="horizontal"
+        aria-label="Resize schematic and trend panels"
+        onPointerDown={startDrag}
+        className="group flex shrink-0 cursor-row-resize touch-none select-none items-center justify-center"
+        style={{
+          height: 14,
+          borderTop: "2px solid var(--primary)",
+          ...BAR_BG,
+        }}
       >
-        <div
-          style={{
-            borderTop: "2px solid var(--primary)",
-            boxShadow: "0 -6px 28px color-mix(in oklch, var(--primary) 14%, transparent)",
-            ...BAR_BG,
-          }}
-        >
-          {/* Header */}
-          <div
-            className="flex items-center gap-4 px-4 py-2"
-            style={{ borderBottom: "1px solid oklch(1 0 0 / 10%)" }}
-          >
-            <div className="flex items-center gap-2">
-              <span className="relative flex size-1.5">
-                <span
-                  className="absolute inline-flex size-full animate-ping rounded-full opacity-60"
-                  style={{ backgroundColor: "var(--primary)" }}
-                />
-                <span
-                  className="relative inline-flex size-1.5 rounded-full"
-                  style={{ backgroundColor: "var(--primary)" }}
-                />
-              </span>
-              <div>
-                <p className="font-mono text-[8px] uppercase tracking-[0.25em] text-muted-foreground">
-                  Real-time · 12-month window
-                </p>
-                <p className="font-mono text-[11px] font-bold uppercase tracking-widest text-foreground">
-                  Wall Thickness Monitor
-                </p>
-              </div>
-            </div>
-
-            <div className="h-7 w-px bg-border/40" aria-hidden="true" />
-
-            <div className="flex flex-wrap gap-3">
-              {ACTIVE_NODES.map((n) => (
-                <span key={n.id} className="flex items-center gap-1.5 font-mono text-[9px]">
-                  <span
-                    className="size-1.5 rounded-full"
-                    style={{
-                      backgroundColor: NODE_CHART_COLORS[n.id],
-                      boxShadow: `0 0 4px ${NODE_CHART_COLORS[n.id]}`,
-                    }}
-                    aria-hidden="true"
-                  />
-                  <span style={{ color: NODE_CHART_COLORS[n.id] }}>{n.id}</span>
-                  <span className="text-muted-foreground/60">{n.location.split(" ")[0]}</span>
-                </span>
-              ))}
-            </div>
-
-            <button
-              type="button"
-              aria-label="Close trend panel"
-              onClick={() => setTrendOpen(false)}
-              className="ml-auto flex size-6 shrink-0 items-center justify-center text-muted-foreground transition-colors hover:text-foreground"
-              style={{ border: "1px solid oklch(1 0 0 / 14%)", borderRadius: 2 }}
-            >
-              <X className="size-3.5" aria-hidden="true" />
-            </button>
-          </div>
-
-          {/* Chart */}
-          <div className="h-44 w-full px-2 pb-2 pt-1">
-            <ResponsiveContainer width="100%" height="100%">
-              <AreaChart data={perNodeThicknessTrend} margin={{ top: 4, right: 10, left: -18, bottom: 0 }}>
-                <defs>
-                  {ACTIVE_NODES.map((node) => {
-                    const c = NODE_CHART_COLORS[node.id]
-                    return (
-                      <linearGradient key={node.id} id={`d2-grad-${node.id}`} x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="0%" stopColor={c} stopOpacity={0.25} />
-                        <stop offset="100%" stopColor={c} stopOpacity={0} />
-                      </linearGradient>
-                    )
-                  })}
-                </defs>
-                <CartesianGrid strokeDasharray="2 4" stroke="oklch(1 0 0 / 7%)" vertical={false} />
-                <XAxis
-                  dataKey="month"
-                  tick={{ fill: "var(--muted-foreground)", fontSize: 9, fontFamily: "var(--font-mono)" }}
-                  tickLine={false}
-                  axisLine={false}
-                  minTickGap={32}
-                />
-                <YAxis
-                  domain={[0, 14]}
-                  tick={{ fill: "var(--muted-foreground)", fontSize: 9, fontFamily: "var(--font-mono)" }}
-                  tickLine={false}
-                  axisLine={false}
-                  tickFormatter={(v) => `${v}mm`}
-                />
-                <Tooltip content={<TrendTooltip />} />
-                <ReferenceLine
-                  y={6}
-                  stroke="var(--status-warning)"
-                  strokeDasharray="4 3"
-                  strokeWidth={1}
-                  label={{ value: "min", position: "insideTopRight", fill: "var(--status-warning)", fontSize: 8, fontFamily: "var(--font-mono)" }}
-                />
-                {ACTIVE_NODES.map((node) => (
-                  <Area
-                    key={node.id}
-                    type="monotone"
-                    dataKey={node.id}
-                    name={node.location}
-                    stroke={NODE_CHART_COLORS[node.id]}
-                    strokeWidth={1.5}
-                    fill={`url(#d2-grad-${node.id})`}
-                    dot={false}
-                    activeDot={{ r: 3, strokeWidth: 0 }}
-                  />
-                ))}
-              </AreaChart>
-            </ResponsiveContainer>
-          </div>
+        {/* Grab handle — stacked pill bars */}
+        <div className="flex flex-col items-center gap-[3px]">
+          <span
+            className="block rounded-full transition-colors"
+            style={{
+              width: 34,
+              height: 2,
+              background: dragging ? "var(--primary)" : "oklch(1 0 0 / 28%)",
+            }}
+          />
+          <span
+            className="block rounded-full transition-colors"
+            style={{
+              width: 34,
+              height: 2,
+              background: dragging ? "var(--primary)" : "oklch(1 0 0 / 28%)",
+            }}
+          />
         </div>
+      </div>
+
+      {/* ═══════════════════════════════════
+          Trend container — permanently visible, scrollable
+      ═══════════════════════════════════ */}
+      <div
+        className="kiosk-trend-scroll min-h-0 flex-1 overflow-y-auto"
+        style={BAR_BG}
+      >
+        <TrendPanel
+          title="Real-Time 12-Month Visuals"
+          thicknessData={perNodeThicknessTrend}
+          powerData={perNodePowerConsumption}
+          gradPrefix="rt"
+        />
+        <TrendPanel
+          title="Historical 12-Month Visuals"
+          thicknessData={perNodeThicknessTrendHistorical}
+          powerData={perNodePowerConsumptionHistorical}
+          gradPrefix="hist"
+        />
       </div>
 
       {/* ═══════════════════════════════════
@@ -334,43 +449,6 @@ export function DashboardV2View({
             </span>
           </div>
         )}
-
-        {/* Trend toggle */}
-        <button
-          type="button"
-          onClick={() => setTrendOpen((v) => !v)}
-          className="flex items-center gap-2 px-4 transition-all"
-          style={{
-            borderLeft: "1px solid oklch(1 0 0 / 12%)",
-            background: trendOpen
-              ? "color-mix(in oklch, var(--primary) 12%, transparent)"
-              : undefined,
-            borderLeftColor: trendOpen ? "var(--primary)" : undefined,
-            boxShadow: trendOpen
-              ? "inset 0 1px 0 color-mix(in oklch, var(--primary) 40%, transparent)"
-              : undefined,
-          }}
-        >
-          <TrendingDown
-            className="size-3.5 shrink-0"
-            style={{ color: trendOpen ? "var(--primary)" : "var(--muted-foreground)" }}
-            aria-hidden="true"
-          />
-          <div className="text-left">
-            <p className="font-mono text-[8px] uppercase tracking-[0.2em] text-muted-foreground">
-              Monitor
-            </p>
-            <p
-              className="font-mono text-[10px] font-semibold uppercase tracking-widest"
-              style={{ color: trendOpen ? "var(--primary)" : "var(--foreground)" }}
-            >
-              Trend
-            </p>
-          </div>
-          <span className="ml-1 font-mono text-xs text-muted-foreground" aria-hidden="true">
-            {trendOpen ? "▼" : "▲"}
-          </span>
-        </button>
       </div>
     </div>
   )

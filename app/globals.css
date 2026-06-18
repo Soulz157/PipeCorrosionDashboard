@@ -142,3 +142,23 @@
     @apply font-sans;
   }
 }
+
+/* Dark, always-visible scrollbar for the kiosk trend container */
+.kiosk-trend-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: oklch(0.42 0.01 240) transparent;
+}
+.kiosk-trend-scroll::-webkit-scrollbar {
+  width: 10px;
+}
+.kiosk-trend-scroll::-webkit-scrollbar-track {
+  background: oklch(0.16 0.005 240);
+}
+.kiosk-trend-scroll::-webkit-scrollbar-thumb {
+  background: oklch(0.42 0.01 240);
+  border-radius: 2px;
+  border: 2px solid oklch(0.16 0.005 240);
+}
+.kiosk-trend-scroll::-webkit-scrollbar-thumb:hover {
+  background: oklch(0.52 0.01 240);
+}

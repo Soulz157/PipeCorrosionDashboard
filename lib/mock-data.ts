@@ -204,6 +204,84 @@ export const perNodeThicknessTrend: Array<Record<string, number | string>> =
     return point
   })
 
+/** Older 12-month window labels (months -23 .. -12 from now), for historical charts */
+const HISTORICAL_MONTH_LABELS = Array.from({ length: 12 }, (_, i) => {
+  const d = new Date(_now.getFullYear(), _now.getMonth() - (23 - i), 1)
+  return d.toLocaleDateString("en-US", { month: "short", year: "2-digit" })
+})
+
+/** Active (non-offline) nodes — the series rendered in the kiosk trend charts */
+const ACTIVE_TREND_NODES = sensorNodes.filter((n) => n.status !== "offline")
+
+/** Deterministic, seed-stable jitter in [-amp, amp] from an integer seed */
+const wobble = (seed: number, amp: number) =>
+  ((Math.sin(seed * 12.9898) * 43758.5453) % 1) * amp
+
+/** Base real-time power draw (kW) per active node — heavier loops pull more */
+const NODE_POWER_BASE: Record<string, number> = {
+  "PN-01": 62,
+  "PN-02": 104,
+  "PN-03": 118,
+  "PN-04": 71,
+  "PN-05": 88,
+}
+
+/**
+ * Per-node power consumption (kW) — real-time 12-month trailing.
+ * Higher-degradation nodes trend upward over the window (more pump effort).
+ */
+export const perNodePowerConsumption: Array<Record<string, number | string>> =
+  TREND_MONTH_LABELS.map((month, idx) => {
+    const monthsBack = TREND_MONTH_LABELS.length - 1 - idx
+    const point: Record<string, number | string> = { month }
+    for (const node of ACTIVE_TREND_NODES) {
+      const base = NODE_POWER_BASE[node.id] ?? 70
+      const drift = node.degradationRate * 2.4 * (11 - monthsBack)
+      point[node.id] = +Math.max(
+        0,
+        base + drift + wobble(idx + node.id.charCodeAt(4), 3.5),
+      ).toFixed(1)
+    }
+    return point
+  })
+
+/**
+ * Per-node wall thickness — historical (older 12-month window).
+ * Pipe was thicker in the past, so values sit above the real-time series.
+ */
+export const perNodeThicknessTrendHistorical: Array<
+  Record<string, number | string>
+> = HISTORICAL_MONTH_LABELS.map((month, idx) => {
+  const monthsBack = 12 + (HISTORICAL_MONTH_LABELS.length - 1 - idx)
+  const point: Record<string, number | string> = { month }
+  for (const node of ACTIVE_TREND_NODES) {
+    point[node.id] = +Math.max(
+      0,
+      node.thickness + (node.degradationRate / 12) * monthsBack,
+    ).toFixed(2)
+  }
+  return point
+})
+
+/**
+ * Per-node power consumption (kW) — historical (older 12-month window).
+ * Lower baseline load than today, with its own mild pattern.
+ */
+export const perNodePowerConsumptionHistorical: Array<
+  Record<string, number | string>
+> = HISTORICAL_MONTH_LABELS.map((month, idx) => {
+  const point: Record<string, number | string> = { month }
+  for (const node of ACTIVE_TREND_NODES) {
+    const base = (NODE_POWER_BASE[node.id] ?? 70) * 0.86
+    const drift = node.degradationRate * 1.5 * idx
+    point[node.id] = +Math.max(
+      0,
+      base + drift + wobble(idx * 2 + node.id.charCodeAt(4), 4.2),
+    ).toFixed(1)
+  }
+  return point
+})
+
 export type StatusCount = { status: Status; count: number }
 
 export const statusCounts: StatusCount[] = (
