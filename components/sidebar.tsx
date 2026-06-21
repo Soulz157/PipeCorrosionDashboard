@@ -27,13 +27,13 @@ export type View =
   | "dashboard2";
 
 const NAV: { id: View; label: string; icon: typeof Activity }[] = [
-  { id: "fleet", label: "Global Fleet View", icon: Globe2 },
+  // { id: "fleet", label: "Global Fleet View", icon: Globe2 },
   { id: "dashboard2", label: "Overview & Factory", icon: Boxes },
   // { id: "overview", label: "Dashboard v.2", icon: LayoutDashboard },
   { id: "forecast", label: "Manual Forecast", icon: LineChart },
-  { id: "logs", label: "Model Logs & Eval", icon: ScrollText },
-  { id: "factory", label: "Factory Floor", icon: Network },
-  { id: "streamlit", label: "ML Studio", icon: Cpu },
+  // { id: "logs", label: "Model Logs & Eval", icon: ScrollText },
+  // { id: "factory", label: "Factory Floor", icon: Network },
+  // { id: "streamlit", label: "ML Studio", icon: Cpu },
 ];
 
 export function Sidebar({

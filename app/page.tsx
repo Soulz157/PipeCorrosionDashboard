@@ -16,7 +16,7 @@ import { isAuthenticated } from "@/lib/auth-store";
 
 export default function Page() {
   const [authed, setAuthed] = useState<boolean | null>(null);
-  const [view, setView] = useState<View>("fleet");
+  const [view, setView] = useState<View>("dashboard2");
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
 
@@ -34,7 +34,10 @@ export default function Page() {
   if (view === "dashboard2") {
     return (
       <div className="h-screen w-screen overflow-hidden bg-background">
-        <DashboardV2View onNavigateHome={() => setView("overview")} />
+        <DashboardV2View
+          onNavigateHome={() => setView("fleet")}
+          onOpenStreamlit={() => setView("streamlit")}
+        />
       </div>
     );
   }
@@ -101,7 +104,7 @@ export default function Page() {
                 : "overflow-y-auto p-4 md:p-6",
             )}
           >
-            {view === "fleet" && <GlobalFleetView onChange={setView} />}
+            {/* {view === "fleet" && <GlobalFleetView onChange={setView} />} */}
             {/* {view === "overview" && <OverviewView />} */}
             {view === "forecast" && <ForecastView />}
             {view === "logs" && <LogsView />}

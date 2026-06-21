@@ -16,109 +16,21 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-
-const CRITICAL_THICKNESS = 4.0;
-const MIN_THICKNESS = 6.0;
-const MAX_HORIZON = 120;
+import {
+  CRITICAL_THICKNESS,
+  MIN_THICKNESS,
+  URGENCY_META,
+  type Urgency,
+  buildCurve,
+  getUrgency,
+  monthOffsetToLabel,
+  monthsToThreshold,
+} from "@/lib/forecast";
 
 type Forecast = {
   rate: number;
   thickness: number;
 };
-
-type Urgency = "safe" | "watch" | "monitor" | "high" | "critical";
-
-function monthOffsetToLabel(offset: number): string {
-  const d = new Date();
-  d.setMonth(d.getMonth() + offset);
-  return d.toLocaleDateString("en-US", { month: "short", year: "2-digit" });
-}
-
-function getUrgency(min: number | null, crit: number | null): Urgency {
-  if (min === 0 || crit === 0) return "critical";
-  if (crit !== null && crit <= 6) return "critical";
-  if (crit !== null && crit <= 12) return "high";
-  if (min !== null && min <= 6) return "high";
-  if (min !== null && min <= 12) return "monitor";
-  if (min !== null && min <= 24) return "watch";
-  return "safe";
-}
-
-const URGENCY_META: Record<
-  Urgency,
-  { label: string; color: string; actions: string[] }
-> = {
-  safe: {
-    label: "Safe",
-    color: "var(--status-normal)",
-    actions: [
-      "No immediate action required.",
-      "Continue standard monitoring at scheduled intervals.",
-      "Review forecast if process conditions change.",
-    ],
-  },
-  watch: {
-    label: "Watch",
-    color: "var(--chart-3)",
-    actions: [
-      "Include in next annual maintenance window.",
-      "Verify degradation rate at next inspection.",
-      "Update forecast inputs after field measurement.",
-    ],
-  },
-  monitor: {
-    label: "Monitor",
-    color: "var(--status-warning)",
-    actions: [
-      "Increase inspection frequency to quarterly.",
-      "Notify maintenance planner to schedule visit.",
-      "Confirm degradation rate with ultrasonic reading.",
-    ],
-  },
-  high: {
-    label: "High Risk",
-    color: "var(--status-warning)",
-    actions: [
-      "Schedule inspection within 30 days.",
-      "Initiate procurement for pipe replacement section.",
-      "Brief operations on reduced operating pressure if needed.",
-    ],
-  },
-  critical: {
-    label: "Critical",
-    color: "var(--status-error)",
-    actions: [
-      "Immediate inspection required — do not delay.",
-      "Begin emergency replacement procedure.",
-      "Notify plant manager and HSE officer.",
-    ],
-  },
-};
-
-function buildCurve(rate: number, thickness: number) {
-  const monthlyRate = rate / 12;
-  if (monthlyRate <= 0) {
-    return Array.from({ length: 25 }, (_, m) => ({
-      label: monthOffsetToLabel(m),
-      thickness: Number(thickness.toFixed(2)),
-    }));
-  }
-  const monthsToCritical =
-    thickness <= CRITICAL_THICKNESS
-      ? 0
-      : Math.ceil((thickness - CRITICAL_THICKNESS) / monthlyRate);
-  const horizon = Math.min(monthsToCritical + 6, MAX_HORIZON);
-  const points = [];
-  for (let m = 0; m <= horizon; m++) {
-    const value = Math.max(0, thickness - monthlyRate * m);
-    points.push({
-      label: monthOffsetToLabel(m),
-      thickness: Number(value.toFixed(2)),
-    });
-    if (value <= 0) break;
-  }
-  return points;
-}
 
 function CurveTooltip({ active, payload, label }: any) {
   if (!active || !payload?.length) return null;
@@ -148,23 +60,25 @@ export function ForecastView() {
     [forecast],
   );
 
-  const monthsToMin = useMemo(() => {
-    if (!forecast) return null;
-    if (forecast.thickness <= MIN_THICKNESS) return 0;
-    if (forecast.rate <= 0) return null;
-    return Math.ceil(
-      (forecast.thickness - MIN_THICKNESS) / (forecast.rate / 12),
-    );
-  }, [forecast]);
+  const monthsToMin = useMemo(
+    () =>
+      forecast
+        ? monthsToThreshold(forecast.thickness, forecast.rate, MIN_THICKNESS)
+        : null,
+    [forecast],
+  );
 
-  const monthsToCritical = useMemo(() => {
-    if (!forecast) return null;
-    if (forecast.thickness <= CRITICAL_THICKNESS) return 0;
-    if (forecast.rate <= 0) return null;
-    return Math.ceil(
-      (forecast.thickness - CRITICAL_THICKNESS) / (forecast.rate / 12),
-    );
-  }, [forecast]);
+  const monthsToCritical = useMemo(
+    () =>
+      forecast
+        ? monthsToThreshold(
+            forecast.thickness,
+            forecast.rate,
+            CRITICAL_THICKNESS,
+          )
+        : null,
+    [forecast],
+  );
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
