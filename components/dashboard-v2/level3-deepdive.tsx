@@ -32,13 +32,13 @@ export function Level3DeepDive({
         <div className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.15em] text-muted-foreground">
           <span
             className="rounded-[3px] border px-2 py-1"
-            style={{ borderColor: "oklch(1 0 0 / 10%)", background: "oklch(0.15 0.006 240 / 70%)" }}
+            style={{ borderColor: "var(--kiosk-hairline)", background: "var(--kiosk-panel)" }}
           >
             {node.id}
           </span>
           <span
             className="rounded-[3px] border px-2 py-1"
-            style={{ borderColor: "oklch(1 0 0 / 10%)", background: "oklch(0.15 0.006 240 / 70%)", color: "var(--primary)" }}
+            style={{ borderColor: "var(--kiosk-hairline)", background: "var(--kiosk-panel)", color: "var(--primary)" }}
           >
             {model.modelId}
           </span>

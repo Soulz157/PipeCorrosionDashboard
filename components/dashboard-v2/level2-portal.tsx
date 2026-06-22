@@ -100,24 +100,24 @@ function ModelCard({
       style={{
         borderColor: primary
           ? "color-mix(in oklch, var(--primary) 50%, transparent)"
-          : "oklch(1 0 0 / 10%)",
-        background: "oklch(0.15 0.006 240 / 80%)",
+          : "var(--kiosk-hairline)",
+        background: "var(--kiosk-panel)",
       }}
     >
       {/* ── Asset mockup image ─────────────────────────────── */}
       <div
         className="relative flex h-32 items-center justify-center overflow-hidden border-b"
         style={{
-          borderColor: "oklch(1 0 0 / 8%)",
+          borderColor: "var(--kiosk-hairline)",
           background:
-            "radial-gradient(120% 100% at 30% 10%, oklch(0.21 0.02 235 / 70%), oklch(0.12 0.006 240) 75%)",
+            "radial-gradient(120% 100% at 30% 10%, var(--kiosk-surface), var(--kiosk-bg) 75%)",
         }}
       >
         <div
           className="pointer-events-none absolute inset-0 opacity-40"
           style={{
             backgroundImage:
-              "linear-gradient(oklch(1 0 0 / 4%) 1px, transparent 1px), linear-gradient(90deg, oklch(1 0 0 / 4%) 1px, transparent 1px)",
+              "linear-gradient(var(--kiosk-hairline-soft) 1px, transparent 1px), linear-gradient(90deg, var(--kiosk-hairline-soft) 1px, transparent 1px)",
             backgroundSize: "22px 22px",
           }}
         />
@@ -203,7 +203,7 @@ function Metric({
           ? "flex items-center justify-between gap-2 border-t pt-2"
           : "flex items-center justify-between gap-2"
       }
-      style={emphasis ? { borderColor: "oklch(1 0 0 / 8%)" } : undefined}
+      style={emphasis ? { borderColor: "var(--kiosk-hairline)" } : undefined}
     >
       <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
         {label}
@@ -290,10 +290,10 @@ function AssetMock({
     <svg viewBox="0 0 240 110" className="relative h-[88px] w-auto" aria-hidden="true">
       <defs>
         <linearGradient id="mock-steel" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="oklch(0.48 0.01 240)" />
-          <stop offset="45%" stopColor="oklch(0.72 0.01 240)" />
-          <stop offset="58%" stopColor="oklch(0.58 0.01 240)" />
-          <stop offset="100%" stopColor="oklch(0.3 0.01 240)" />
+          <stop offset="0%" stopColor="var(--kiosk-ink-dim)" />
+          <stop offset="45%" stopColor="var(--kiosk-ink-faint)" />
+          <stop offset="58%" stopColor="var(--kiosk-ink-dim)" />
+          <stop offset="100%" stopColor="var(--kiosk-line)" />
         </linearGradient>
         <filter id="mock-glow" x="-30%" y="-30%" width="160%" height="160%">
           <feGaussianBlur stdDeviation="5" />
@@ -306,30 +306,30 @@ function AssetMock({
       {isExchanger ? (
         <g>
           {/* Shell */}
-          <rect x="40" y="34" width="160" height="46" rx="23" fill="url(#mock-steel)" stroke="oklch(0.2 0.01 240)" strokeWidth="1.5" />
+          <rect x="40" y="34" width="160" height="46" rx="23" fill="url(#mock-steel)" stroke="var(--kiosk-surface)" strokeWidth="1.5" />
           {/* Tube bundle */}
           {[42, 50, 58, 64].map((y) => (
-            <line key={y} x1="52" y1={y} x2="188" y2={y} stroke="oklch(0.3 0.01 240)" strokeWidth="1" opacity="0.7" />
+            <line key={y} x1="52" y1={y} x2="188" y2={y} stroke="var(--kiosk-line)" strokeWidth="1" opacity="0.7" />
           ))}
           {/* Bonnets */}
-          <rect x="28" y="40" width="14" height="34" rx="3" fill="oklch(0.4 0.01 240)" stroke={token} strokeWidth="1.5" />
-          <rect x="198" y="40" width="14" height="34" rx="3" fill="oklch(0.4 0.01 240)" stroke={token} strokeWidth="1.5" />
+          <rect x="28" y="40" width="14" height="34" rx="3" fill="var(--kiosk-line-strong)" stroke={token} strokeWidth="1.5" />
+          <rect x="198" y="40" width="14" height="34" rx="3" fill="var(--kiosk-line-strong)" stroke={token} strokeWidth="1.5" />
           {/* Nozzles */}
-          <rect x="74" y="20" width="10" height="16" fill="oklch(0.36 0.01 240)" stroke="oklch(0.2 0.01 240)" strokeWidth="1" />
-          <rect x="156" y="20" width="10" height="16" fill="oklch(0.36 0.01 240)" stroke="oklch(0.2 0.01 240)" strokeWidth="1" />
+          <rect x="74" y="20" width="10" height="16" fill="var(--kiosk-line-strong)" stroke="var(--kiosk-surface)" strokeWidth="1" />
+          <rect x="156" y="20" width="10" height="16" fill="var(--kiosk-line-strong)" stroke="var(--kiosk-surface)" strokeWidth="1" />
         </g>
       ) : (
         <g>
           {/* Pipe body */}
-          <rect x="36" y="44" width="168" height="34" fill="url(#mock-steel)" stroke="oklch(0.2 0.01 240)" strokeWidth="1.5" />
+          <rect x="36" y="44" width="168" height="34" fill="url(#mock-steel)" stroke="var(--kiosk-surface)" strokeWidth="1.5" />
           {/* End caps */}
-          <ellipse cx="36" cy="61" rx="10" ry="17" fill="oklch(0.26 0.01 240)" stroke={token} strokeWidth="1.5" />
-          <ellipse cx="36" cy="61" rx="5" ry="11" fill="oklch(0.12 0.006 240)" />
-          <ellipse cx="204" cy="61" rx="10" ry="17" fill="oklch(0.36 0.01 240)" stroke={token} strokeWidth="1.75" />
-          <ellipse cx="204" cy="61" rx="5" ry="11" fill="oklch(0.1 0.006 240)" />
+          <ellipse cx="36" cy="61" rx="10" ry="17" fill="var(--kiosk-surface)" stroke={token} strokeWidth="1.5" />
+          <ellipse cx="36" cy="61" rx="5" ry="11" fill="var(--kiosk-bg)" />
+          <ellipse cx="204" cy="61" rx="10" ry="17" fill="var(--kiosk-line-strong)" stroke={token} strokeWidth="1.75" />
+          <ellipse cx="204" cy="61" rx="5" ry="11" fill="var(--kiosk-bg)" />
           {/* Flanges */}
-          <rect x="92" y="40" width="6" height="42" fill="oklch(0.42 0.01 240)" stroke="oklch(0.2 0.01 240)" strokeWidth="1" />
-          <rect x="146" y="40" width="6" height="42" fill="oklch(0.42 0.01 240)" stroke="oklch(0.2 0.01 240)" strokeWidth="1" />
+          <rect x="92" y="40" width="6" height="42" fill="var(--kiosk-line-strong)" stroke="var(--kiosk-surface)" strokeWidth="1" />
+          <rect x="146" y="40" width="6" height="42" fill="var(--kiosk-line-strong)" stroke="var(--kiosk-surface)" strokeWidth="1" />
           {/* Corrosion sheen toward worn end */}
           {!offline &&
             [0, 1, 2, 3].map((i) => (

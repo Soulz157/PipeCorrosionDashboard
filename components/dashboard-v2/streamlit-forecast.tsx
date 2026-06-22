@@ -28,7 +28,7 @@ import {
 } from "recharts";
 
 const STREAMLIT_URL = "http://localhost:8501";
-const STREAMLIT_RED = "#ff4b4b";
+const STREAMLIT_RED = "#dc2626";
 const Z = 1.96; // 95% CI
 
 export function StreamlitForecast({
@@ -93,12 +93,12 @@ export function StreamlitForecast({
   return (
     <div
       className="flex h-full flex-col overflow-hidden rounded-[4px] border"
-      style={{ borderColor: "oklch(1 0 0 / 10%)" }}
+      style={{ borderColor: "var(--kiosk-hairline)" }}
     >
       {/* Browser chrome */}
       <div
         className="flex items-center justify-between px-4 py-2.5"
-        style={{ borderBottom: "1px solid oklch(1 0 0 / 10%)", background: "oklch(0.2 0.006 240)" }}
+        style={{ borderBottom: "1px solid var(--kiosk-hairline)", background: "var(--kiosk-bg)" }}
       >
         <div className="flex items-center gap-2">
           <span className="flex gap-1.5">
@@ -118,14 +118,14 @@ export function StreamlitForecast({
       </div>
 
       {/* App body */}
-      <div className="flex min-h-0 flex-1 flex-col lg:flex-row" style={{ background: "oklch(0.17 0.005 240)" }}>
+      <div className="flex min-h-0 flex-1 flex-col lg:flex-row" style={{ background: "var(--kiosk-panel)" }}>
         {/* ── Sidebar — Simulation Parameters ────────────────── */}
         <aside
           className="shrink-0 p-4 lg:w-60"
-          style={{ background: "oklch(0.21 0.006 240)", borderRight: "1px solid oklch(1 0 0 / 8%)" }}
+          style={{ background: "var(--kiosk-surface)", borderRight: "1px solid var(--kiosk-hairline)" }}
         >
           <div className="mb-4 flex items-center gap-2">
-            <span className="size-6 rounded" style={{ background: `linear-gradient(135deg, ${STREAMLIT_RED}, #ff6b6b)` }} />
+            <span className="size-6 rounded" style={{ background: `linear-gradient(135deg, ${STREAMLIT_RED}, #e23a3a)` }} />
             <span className="font-mono text-xs font-bold text-foreground">PipeGuard RUL</span>
           </div>
 
@@ -191,7 +191,7 @@ export function StreamlitForecast({
           </div>
 
           {/* Forecast chart with 95% CI */}
-          <div className="mb-4 rounded-[3px] border p-3" style={{ borderColor: "oklch(1 0 0 / 8%)", background: "oklch(0.15 0.006 240)" }}>
+          <div className="mb-4 rounded-[3px] border p-3" style={{ borderColor: "var(--kiosk-hairline)", background: "var(--kiosk-panel)" }}>
             <div className="mb-2 flex items-center justify-between">
               <p className="font-mono text-[11px] font-medium text-muted-foreground">
                 Forecast Thickness · 95% CI
@@ -214,7 +214,7 @@ export function StreamlitForecast({
                       <stop offset="100%" stopColor="var(--primary)" stopOpacity={0.06} />
                     </linearGradient>
                   </defs>
-                  <CartesianGrid strokeDasharray="2 4" stroke="oklch(1 0 0 / 7%)" vertical={false} />
+                  <CartesianGrid strokeDasharray="2 4" stroke="var(--kiosk-hairline-soft)" vertical={false} />
                   <XAxis
                     dataKey="label"
                     tick={{ fill: "var(--muted-foreground)", fontSize: 9, fontFamily: "var(--font-mono)" }}
@@ -260,10 +260,10 @@ export function StreamlitForecast({
           <p className="mb-2 font-mono text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground">
             Best / Base / Worst Case
           </p>
-          <div className="overflow-hidden rounded-[3px] border" style={{ borderColor: "oklch(1 0 0 / 8%)" }}>
+          <div className="overflow-hidden rounded-[3px] border" style={{ borderColor: "var(--kiosk-hairline)" }}>
             <table className="w-full font-mono text-[11px]">
               <thead>
-                <tr className="text-left text-muted-foreground" style={{ borderBottom: "1px solid oklch(1 0 0 / 8%)" }}>
+                <tr className="text-left text-muted-foreground" style={{ borderBottom: "1px solid var(--kiosk-hairline)" }}>
                   <th className="px-3 py-2 font-medium">Case</th>
                   <th className="px-3 py-2 font-medium">CR</th>
                   <th className="px-3 py-2 font-medium">RUL</th>
@@ -307,7 +307,7 @@ function CaseRow({
   const rulYears = rul === null ? "∞" : rul === 0 ? "0" : (rul / 12).toFixed(1);
   const breach = rul === null ? "—" : rul === 0 ? "now" : monthOffsetToLabel(rul);
   return (
-    <tr style={last ? undefined : { borderBottom: "1px solid oklch(1 0 0 / 6%)" }}>
+    <tr style={last ? undefined : { borderBottom: "1px solid var(--kiosk-hairline-soft)" }}>
       <td className="px-3 py-2 font-bold" style={{ color }}>
         {label}
       </td>
@@ -344,8 +344,8 @@ function SInput({
         min="0"
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="w-full rounded border bg-[oklch(0.16_0.006_240)] px-2 py-1.5 font-mono text-xs font-bold tabular-nums text-foreground outline-none focus:border-[var(--primary)]"
-        style={{ borderColor: "oklch(1 0 0 / 14%)" }}
+        className="w-full rounded border bg-[var(--kiosk-panel)] px-2 py-1.5 font-mono text-xs font-bold tabular-nums text-foreground outline-none focus:border-[var(--primary)]"
+        style={{ borderColor: "var(--kiosk-hairline-strong)" }}
       />
     </label>
   );
@@ -363,7 +363,7 @@ function Stat({
   color: string;
 }) {
   return (
-    <div className="rounded-[3px] border p-2.5" style={{ borderColor: "oklch(1 0 0 / 8%)", background: "oklch(0.15 0.006 240)" }}>
+    <div className="rounded-[3px] border p-2.5" style={{ borderColor: "var(--kiosk-hairline)", background: "var(--kiosk-panel)" }}>
       <p className="font-mono text-[8px] uppercase tracking-[0.15em] text-muted-foreground">{label}</p>
       <p className="font-mono text-base font-bold tabular-nums leading-tight" style={{ color }}>
         {value}

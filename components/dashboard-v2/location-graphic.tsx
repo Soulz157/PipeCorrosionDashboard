@@ -25,7 +25,7 @@ type PidItem = {
 };
 
 const RED = "var(--status-error)";
-const LINE = "oklch(0.72 0.04 220)";
+const LINE = "var(--kiosk-accent)";
 
 // Hand-laid P&ID coordinates (chain 01→02→03→04→05, branch 03→06).
 const PID: Record<string, PidItem> = {
@@ -54,12 +54,12 @@ export function LocationGraphic({ node }: { node: SensorNode }) {
   return (
     <div
       className="relative flex h-full min-h-[320px] flex-col overflow-hidden rounded-[4px] border"
-      style={{ borderColor: "oklch(1 0 0 / 10%)" }}
+      style={{ borderColor: "var(--kiosk-hairline)" }}
     >
       {/* Title strip */}
       <div
         className="flex items-center gap-2 px-4 py-2.5"
-        style={{ borderBottom: "1px solid oklch(1 0 0 / 10%)", background: "oklch(0.13 0.006 240 / 90%)" }}
+        style={{ borderBottom: "1px solid var(--kiosk-hairline)", background: "var(--kiosk-bg)" }}
       >
         <span className="size-1.5 rounded-full" style={{ background: RED, boxShadow: `0 0 6px ${RED}` }} />
         <p className="font-mono text-[11px] font-bold uppercase tracking-[0.25em] text-foreground">P&amp;ID</p>
@@ -70,7 +70,7 @@ export function LocationGraphic({ node }: { node: SensorNode }) {
       </div>
 
       {/* Schematic */}
-      <div className="relative flex-1" style={{ background: "oklch(0.13 0.008 245)" }}>
+      <div className="relative flex-1" style={{ background: "var(--kiosk-bg)" }}>
         <svg
           viewBox="0 0 920 380"
           preserveAspectRatio="xMidYMid meet"
@@ -80,7 +80,7 @@ export function LocationGraphic({ node }: { node: SensorNode }) {
         >
           <defs>
             <pattern id="pid-grid" width="22" height="22" patternUnits="userSpaceOnUse">
-              <path d="M22 0H0V22" fill="none" stroke="oklch(0.6 0.05 220 / 9%)" strokeWidth="0.5" />
+              <path d="M22 0H0V22" fill="none" stroke="var(--kiosk-glow)" strokeWidth="0.5" />
             </pattern>
             <filter id="pid-glow" x="-60%" y="-60%" width="220%" height="220%">
               <feGaussianBlur stdDeviation="4" />
@@ -89,7 +89,7 @@ export function LocationGraphic({ node }: { node: SensorNode }) {
 
           {/* Drawing frame + grid */}
           <rect x="0" y="0" width="920" height="380" fill="url(#pid-grid)" />
-          <rect x="12" y="12" width="896" height="356" fill="none" stroke="oklch(0.6 0.05 220 / 30%)" strokeWidth="1" />
+          <rect x="12" y="12" width="896" height="356" fill="none" stroke="var(--kiosk-glow)" strokeWidth="1" />
 
           {/* Boundary stubs (process in / out / drain) */}
           <BoundaryStub x={40} y={170} dir="in" label="PROCESS IN" />
@@ -169,7 +169,7 @@ function PidNode({
       {/* Instrument balloon (field-mounted) */}
       <g>
         <line x1={x} y1={y - 30} x2={x} y2={y - 44} stroke={LINE} strokeWidth="1" />
-        <circle cx={x} cy={y - 60} r="16" fill="oklch(0.16 0.008 245)" stroke={LINE} strokeWidth="1.25" />
+        <circle cx={x} cy={y - 60} r="16" fill="var(--kiosk-panel)" stroke={LINE} strokeWidth="1.25" />
         <line x1={x - 16} y1={y - 60} x2={x + 16} y2={y - 60} stroke={LINE} strokeWidth="1" />
         <text x={x} y={y - 63} textAnchor="middle" className="font-mono" style={{ fontSize: 8, fontWeight: 700, fill: "var(--foreground)" }}>
           {item.instr.split(" ")[0]}
@@ -233,7 +233,7 @@ function EquipmentSymbol({
   offline: boolean;
 }) {
   const stroke = token;
-  const fill = "oklch(0.18 0.008 245)";
+  const fill = "var(--kiosk-panel-raised)";
   const sw = 1.75;
   const op = offline ? 0.55 : 1;
 
@@ -300,7 +300,7 @@ function EquipmentSymbol({
 function GateValve({ x, y }: { x: number; y: number }) {
   return (
     <g>
-      <path d={`M ${x - 8} ${y - 7} L ${x + 8} ${y + 7} L ${x + 8} ${y - 7} L ${x - 8} ${y + 7} Z`} fill="oklch(0.18 0.008 245)" stroke={LINE} strokeWidth="1.5" />
+      <path d={`M ${x - 8} ${y - 7} L ${x + 8} ${y + 7} L ${x + 8} ${y - 7} L ${x - 8} ${y + 7} Z`} fill="var(--kiosk-panel-raised)" stroke={LINE} strokeWidth="1.5" />
     </g>
   );
 }
@@ -327,7 +327,7 @@ function BoundaryStub({
   const ty = dir === "in" ? y + 3 : dir === "up" ? y - 18 : y + 20;
   return (
     <g>
-      <path d={flag} fill="oklch(0.16 0.008 245)" stroke={LINE} strokeWidth="1.25" />
+      <path d={flag} fill="var(--kiosk-panel)" stroke={LINE} strokeWidth="1.25" />
       <text x={tx} y={ty} textAnchor="middle" className="font-mono" style={{ fontSize: 6.5, fontWeight: 700, fill: "var(--muted-foreground)", letterSpacing: "0.05em" }}>
         {label}
       </text>

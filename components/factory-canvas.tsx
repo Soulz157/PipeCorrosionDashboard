@@ -720,7 +720,7 @@ export function FactoryCanvas() {
                         <div
                           className="flex flex-col gap-px rounded border px-1.5 py-1 text-[8.5px] backdrop-blur-sm"
                           style={{
-                            backgroundColor: "oklch(0.14 0.005 240 / 0.92)",
+                            backgroundColor: "oklch(0.98 0.006 195 / 0.94)",
                             borderColor: `color-mix(in oklch, ${color} 28%, transparent)`,
                           }}
                         >
@@ -767,13 +767,13 @@ export function FactoryCanvas() {
                       className={cn(
                         "relative flex size-9 items-center justify-center rounded-full border-2 shadow-lg transition-transform duration-150",
                         isSelected || isEditing
-                          ? "scale-125 ring-2 ring-white/30 ring-offset-1 ring-offset-black/50"
+                          ? "scale-125 ring-2 ring-foreground/20 ring-offset-1 ring-offset-black/50"
                           : "group-hover:scale-110",
                         buildMode === "delete" && "border-status-error",
                       )}
                       style={{
                         borderColor: color,
-                        backgroundColor: `color-mix(in oklch, ${color} 20%, oklch(0.18 0.006 240))`,
+                        backgroundColor: `color-mix(in oklch, ${color} 20%, oklch(1 0 0))`,
                         boxShadow: `0 0 12px color-mix(in oklch, ${color} 40%, transparent)`,
                       }}
                     >
@@ -801,7 +801,7 @@ export function FactoryCanvas() {
                     <div
                       className="max-w-[100px] rounded px-1.5 py-0.5 text-center text-[10px] font-medium leading-tight"
                       style={{
-                        backgroundColor: "oklch(0.16 0.005 240 / 0.85)",
+                        backgroundColor: "oklch(0.985 0.006 195 / 0.9)",
                         color,
                         border: `1px solid color-mix(in oklch, ${color} 30%, transparent)`,
                       }}

@@ -30,13 +30,15 @@ export default function Page() {
     return <LoginScreen onSuccess={() => setAuthed(true)} />;
   }
 
-  // Dashboard v.2 — full-screen kiosk mode, no sidebar or header
+  // Dashboard v.2 — full-screen kiosk mode with its own sidebar
   if (view === "dashboard2") {
     return (
       <div className="h-screen w-screen overflow-hidden bg-background">
         <DashboardV2View
-          onNavigateHome={() => setView("fleet")}
+          onNavigateHome={() => setView("overview")}
           onOpenStreamlit={() => setView("streamlit")}
+          onChangeView={setView}
+          onLogout={() => setAuthed(false)}
         />
       </div>
     );
@@ -104,6 +106,7 @@ export default function Page() {
                 : "overflow-y-auto p-4 md:p-6",
             )}
           >
+            {/* {view === "fleet" && <GlobalFleetView onChange={setView} />} */}
             {/* {view === "fleet" && <GlobalFleetView onChange={setView} />} */}
             {/* {view === "overview" && <OverviewView />} */}
             {view === "forecast" && <ForecastView />}

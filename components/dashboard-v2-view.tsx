@@ -10,16 +10,18 @@ import { Level1Flow } from "@/components/dashboard-v2/level1-flow";
 import { Level2Portal } from "@/components/dashboard-v2/level2-portal";
 import { Level3DeepDive } from "@/components/dashboard-v2/level3-deepdive";
 import { ChevronRight, Home } from "lucide-react";
+import { Header } from "./header";
+import { Sidebar, type View } from "./sidebar";
 
 type Level = 1 | 2 | 3;
 
 const SCANLINE: React.CSSProperties = {
   backgroundImage:
-    "repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(255,255,255,0.012) 2px,rgba(255,255,255,0.012) 4px)",
+    "repeating-linear-gradient(0deg,transparent,transparent 2px,var(--kiosk-grid) 2px,var(--kiosk-grid) 4px)",
 };
 
 const BAR_BG: React.CSSProperties = {
-  background: "oklch(0.13 0.005 240 / 96%)",
+  background: "var(--kiosk-bg)",
   backdropFilter: "blur(14px)",
   ...SCANLINE,
 };
@@ -27,18 +29,25 @@ const BAR_BG: React.CSSProperties = {
 export function DashboardV2View({
   onNavigateHome,
   onOpenStreamlit,
+  onChangeView,
+  onLogout,
 }: {
   onNavigateHome?: () => void;
   onOpenStreamlit?: () => void;
+  onChangeView?: (v: View) => void;
+  onLogout?: () => void;
 }) {
   const [level, setLevel] = useState<Level>(1);
+  const [collapsed, setCollapsed] = useState(false);
   const [nodeId, setNodeId] = useState<string | null>(null);
   const [modelId, setModelId] = useState<string | null>(null);
 
-  const node = nodeId ? sensorNodes.find((n) => n.id === nodeId) ?? null : null;
+  const node = nodeId
+    ? (sensorNodes.find((n) => n.id === nodeId) ?? null)
+    : null;
   const model =
     node && modelId
-      ? node.models.find((m) => m.modelId === modelId) ?? null
+      ? (node.models.find((m) => m.modelId === modelId) ?? null)
       : null;
 
   // Guard against inconsistent state (e.g. missing node/model).
@@ -64,32 +73,48 @@ export function DashboardV2View({
   };
 
   return (
-    <div className="relative flex h-full w-full flex-col bg-background">
-      {/* ── Breadcrumb / level bar ─────────────────────────────── */}
-      <header
+    <div className="flex h-full w-full bg-background">
+      {/* ── Sidebar (desktop) ──────────────────────────────────── */}
+      <div className="hidden md:block">
+        <Sidebar
+          active="dashboard2"
+          onChange={(v) => onChangeView?.(v)}
+          onLogout={() => onLogout?.()}
+          collapsed={collapsed}
+          onToggle={() => setCollapsed((v) => !v)}
+        />
+      </div>
+
+      {/* ── Content column ─────────────────────────────────────── */}
+      <div className="relative flex min-w-0 flex-1 flex-col">
+        <Header view="dashboard2" onMobileMenuOpen={undefined} />
+        {/* ── Breadcrumb / level bar ───────────────────────────── */}
+        <header
         className="relative z-30 flex h-12 shrink-0 items-center gap-1 px-2"
-        style={{ borderBottom: "1px solid oklch(1 0 0 / 12%)", ...BAR_BG }}
+        style={{
+          borderBottom: "1px solid var(--kiosk-hairline)",
+          ...BAR_BG,
+        }}
       >
         {onNavigateHome && (
           <button
             type="button"
             onClick={onNavigateHome}
-            className="mr-1 flex items-center gap-2 rounded-[3px] px-3 py-1.5 transition-colors hover:bg-white/5"
-            style={{ borderRight: "1px solid oklch(1 0 0 / 10%)" }}
+            className="mr-1 flex items-center gap-2 rounded-[3px] px-3 py-1.5 transition-colors hover:bg-foreground/5"
+            style={{ borderRight: "1px solid var(--kiosk-hairline)" }}
             aria-label="Return to fleet"
           >
-            <Home className="size-3.5" style={{ color: "var(--muted-foreground)" }} />
+            <Home
+              className="size-3.5"
+              style={{ color: "var(--muted-foreground)" }}
+            />
             <span className="hidden font-mono text-[10px] font-semibold uppercase tracking-[0.2em] text-muted-foreground sm:block">
               Fleet
             </span>
           </button>
         )}
 
-        <Crumb
-          label="System Flow"
-          active={effLevel === 1}
-          onClick={goSystem}
-        />
+        <Crumb label="System Flow" active={effLevel === 1} onClick={goSystem} />
         {node && (
           <>
             <ChevronRight className="size-3.5 shrink-0 text-muted-foreground" />
@@ -103,7 +128,11 @@ export function DashboardV2View({
         {node && model && (
           <>
             <ChevronRight className="size-3.5 shrink-0 text-muted-foreground" />
-            <Crumb label={model.modelId} active={effLevel === 3} onClick={() => setLevel(3)} />
+            <Crumb
+              label={model.modelId}
+              active={effLevel === 3}
+              onClick={() => setLevel(3)}
+            />
           </>
         )}
 
@@ -115,8 +144,11 @@ export function DashboardV2View({
               className="size-1.5 rounded-full transition-colors"
               style={{
                 background:
-                  effLevel === l ? "var(--primary)" : "oklch(1 0 0 / 18%)",
-                boxShadow: effLevel === l ? "0 0 6px var(--primary)" : undefined,
+                  effLevel === l
+                    ? "var(--primary)"
+                    : "var(--kiosk-hairline-strong)",
+                boxShadow:
+                  effLevel === l ? "0 0 6px var(--primary)" : undefined,
               }}
             />
           ))}
@@ -150,6 +182,7 @@ export function DashboardV2View({
           )}
         </div>
       </main>
+      </div>
     </div>
   );
 }
@@ -167,8 +200,10 @@ function Crumb({
     <button
       type="button"
       onClick={onClick}
-      className="max-w-[40vw] truncate rounded-[3px] px-2.5 py-1.5 font-mono text-[11px] font-semibold uppercase tracking-[0.12em] transition-colors hover:bg-white/5"
-      style={{ color: active ? "var(--foreground)" : "var(--muted-foreground)" }}
+      className="max-w-[40vw] truncate rounded-[3px] px-2.5 py-1.5 font-mono text-[11px] font-semibold uppercase tracking-[0.12em] transition-colors hover:bg-foreground/5"
+      style={{
+        color: active ? "var(--foreground)" : "var(--muted-foreground)",
+      }}
     >
       {label}
     </button>

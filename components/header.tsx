@@ -21,7 +21,7 @@ const TITLES: Record<string, { title: string; sub: string }> = {
     sub: "Full-screen 2.5D pipe network with live monitoring nodes",
   },
   dashboard2: {
-    title: "Dashboard v.2",
+    title: "Dashboard",
     sub: "Full-screen factory floor with live status HUD and thickness trend overlay",
   },
   streamlit: {
@@ -61,7 +61,9 @@ export function Header({
           <h1 className="text-pretty text-xl font-semibold tracking-tight text-foreground">
             {meta.title}
           </h1>
-          <p className="text-pretty text-sm text-muted-foreground">{meta.sub}</p>
+          <p className="text-pretty text-sm text-muted-foreground">
+            {meta.sub}
+          </p>
         </div>
       </div>
 

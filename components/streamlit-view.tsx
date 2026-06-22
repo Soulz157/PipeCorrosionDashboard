@@ -210,7 +210,7 @@ export function StreamlitView() {
             <div className="mb-4 flex items-center gap-2">
               <div
                 className="size-6 rounded"
-                style={{ background: "linear-gradient(135deg, #ff4b4b, #ff6b6b)" }}
+                style={{ background: "linear-gradient(135deg, #dc2626, #e23a3a)" }}
               />
               <span className="text-xs font-bold text-foreground">PipeGuard ML</span>
             </div>
@@ -249,7 +249,7 @@ export function StreamlitView() {
               <button
                 type="button"
                 className="mt-2 w-full rounded py-1.5 text-xs font-medium text-white"
-                style={{ backgroundColor: "#ff4b4b" }}
+                style={{ backgroundColor: "#dc2626" }}
               >
                 ▶ Run Prediction
               </button>

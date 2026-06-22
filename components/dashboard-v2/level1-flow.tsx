@@ -69,14 +69,14 @@ export function Level1Flow({
         className="pointer-events-none absolute inset-0"
         style={{
           background:
-            "radial-gradient(120% 90% at 50% 8%, oklch(0.22 0.03 235 / 55%), transparent 60%), radial-gradient(100% 80% at 50% 110%, oklch(0.18 0.04 265 / 45%), transparent 55%)",
+            "radial-gradient(120% 90% at 50% 8%, var(--kiosk-surface), transparent 60%), radial-gradient(100% 80% at 50% 110%, var(--kiosk-surface), transparent 55%)",
         }}
       />
       <div
         className="pointer-events-none absolute inset-0 opacity-60"
         style={{
           backgroundImage:
-            "repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(255,255,255,0.012) 2px,rgba(255,255,255,0.012) 4px)",
+            "repeating-linear-gradient(0deg,transparent,transparent 2px,var(--kiosk-grid) 2px,var(--kiosk-grid) 4px)",
         }}
       />
 
@@ -157,8 +157,8 @@ export function Level1Flow({
             </feMerge>
           </filter>
           <radialGradient id="l1-plane" cx="50%" cy="35%" r="70%">
-            <stop offset="0%" stopColor="oklch(0.26 0.02 235 / 70%)" />
-            <stop offset="100%" stopColor="oklch(0.16 0.01 240 / 30%)" />
+            <stop offset="0%" stopColor="var(--kiosk-line)" />
+            <stop offset="100%" stopColor="var(--kiosk-surface)" />
           </radialGradient>
         </defs>
 
@@ -166,7 +166,7 @@ export function Level1Flow({
         <polygon
           points={planeCorners}
           fill="url(#l1-plane)"
-          stroke="oklch(1 0 0 / 12%)"
+          stroke="var(--kiosk-hairline)"
           strokeWidth={1}
         />
         {GRID.map((g) => {
@@ -175,7 +175,7 @@ export function Level1Flow({
           const c = projectIso(0, g);
           const d = projectIso(100, g);
           return (
-            <g key={g} stroke="oklch(1 0 0 / 7%)" strokeWidth={1}>
+            <g key={g} stroke="var(--kiosk-hairline-soft)" strokeWidth={1}>
               <line x1={a.x} y1={a.y} x2={b.x} y2={b.y} />
               <line x1={c.x} y1={c.y} x2={d.x} y2={d.y} />
             </g>
@@ -256,8 +256,8 @@ function Kpi({
     <div
       className="rounded-[3px] border px-3 py-1.5"
       style={{
-        borderColor: "oklch(1 0 0 / 12%)",
-        background: "oklch(0.13 0.005 240 / 88%)",
+        borderColor: "var(--kiosk-hairline)",
+        background: "var(--kiosk-bg)",
         backdropFilter: "blur(10px)",
       }}
     >
@@ -318,12 +318,12 @@ function Pillar({
       {/* Footprint shadow */}
       <polygon
         points={diamond({ x: base.x, y: base.y + 4 }, ISO.tileW + 8, ISO.tileH + 4)}
-        fill="oklch(0 0 0 / 35%)"
+        fill="var(--kiosk-scrim)"
       />
       {/* Base tile */}
       <polygon
         points={diamond(base)}
-        fill="oklch(0.2 0.01 240 / 80%)"
+        fill="var(--kiosk-surface)"
         stroke={token}
         strokeWidth={1}
         opacity={offline ? 0.5 : 0.9}
@@ -331,14 +331,14 @@ function Pillar({
       {/* Column faces */}
       <polygon
         points={faces.left}
-        fill={`color-mix(in oklch, ${token} 32%, #05080d)`}
+        fill={`color-mix(in oklch, ${token} 32%, var(--kiosk-bg))`}
         stroke={`color-mix(in oklch, ${token} 55%, transparent)`}
         strokeWidth={0.75}
         opacity={offline ? 0.5 : 1}
       />
       <polygon
         points={faces.right}
-        fill={`color-mix(in oklch, ${token} 55%, #05080d)`}
+        fill={`color-mix(in oklch, ${token} 55%, var(--kiosk-bg))`}
         stroke={`color-mix(in oklch, ${token} 70%, transparent)`}
         strokeWidth={0.75}
         opacity={offline ? 0.5 : 1}
@@ -423,7 +423,7 @@ function Tooltip({
         width={w}
         height={h}
         rx={3}
-        fill="oklch(0.12 0.005 240 / 97%)"
+        fill="var(--kiosk-bg)"
         stroke={meta.token}
         strokeWidth={1}
       />
